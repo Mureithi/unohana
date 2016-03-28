@@ -1,0 +1,13 @@
+<div class="dashboard buttons">
+  <button class='btn btn-success' style="width:200px">Import Data</button>
+  <button class='btn btn-warning export' style="width:200px">Export Data</button>
+  <input style="visibility:hidden" type="file">
+</div>
+<script type="javascript">
+  $(document).ready(function(){
+    $('button.export').on('click',function(){
+      alert('Yo');
+      $(this).parent().find('input[type=file]').click();
+    })
+  })
+</script>

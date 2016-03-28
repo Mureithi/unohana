@@ -1,0 +1,24 @@
+<div push-menu>
+  <!-- <h5 class="title"><i class="ion-android-list"></i>Menu</h5> -->
+    <accordion>
+      <accordion-group>
+        <accordion-heading>
+          <i class="ion-card"></i>Transactions
+        </accordion-heading>
+        <ul class="nav nav-pills nav-stacked">
+          <li><a href="">Overview</a></li>
+          <li><a is-active-nav ui-sref="account.transaction.list">List</a></li>
+          <li><a is-active-nav ui-sref="account.transaction.new">New</a></li>
+        </ul>
+      </accordion-group>
+      <accordion-group>
+        <accordion-heading>
+          <i class="ion-gear-a"></i>User Management
+        </accordion-heading>
+        <ul class="nav nav-pills nav-stacked">
+          <li><a href="">Profile</a></li>
+          <li><a ui-sref="account.users.list">Settings</a></li>
+        </ul>
+      </accordion-group>
+    </accordion>
+  </ul>

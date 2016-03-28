@@ -5,7 +5,7 @@ var app = express();
 
 // Main Route
 router.get('/', function(req, res) {
-  res.send('Home')
+  res.render('index')
 });
 
 // Login
