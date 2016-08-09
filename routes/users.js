@@ -11,7 +11,7 @@ router.get('/', function(req, res) {
 router.get('/:id', function(req, res) {
   var id = req.params.id;
   models.User.findById(id).then(function(user) {
-    res.send(JSON.stringify(user));
+    res.send(user);
   });
 })
 
@@ -35,6 +35,7 @@ router.put('/:id', function(req, res) {
 
   });
 })
+
 
 
 

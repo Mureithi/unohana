@@ -4,13 +4,19 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var authenticate = require('./routes/auth');
 var questions = require('./controllers/Question.js');
 var app = express();
-
 // view engine setup
+
+// =======================
+// configuration =========
+// =======================
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
@@ -26,6 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/', authenticate);
 app.use('/questions', questions);
 
 // catch 404 and forward to error handler
