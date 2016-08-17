@@ -11,7 +11,7 @@ module.exports = {
       value: {
         type: Sequelize.STRING
       },
-      s_id: {
+      survey_id: {
         type: Sequelize.INTEGER
       },
       createdAt: {
