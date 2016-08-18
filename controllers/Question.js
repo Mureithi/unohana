@@ -2,47 +2,42 @@ var models = require('../models');
 var express = require('express');
 var router = express.Router();
 
-router.get('/list', function(req, res) {
-  models.Question.findAll().then(function(questions) {
-    res.json(questions)
-  })
-});
-router.post('/create', function(req, res) {
-  models.User.create({
-    username: req.body.username
-  }).then(function() {
-    res.redirect('/');
-  });
-});
 
-router.get('/:user_id/destroy', function(req, res) {
-  models.User.destroy({
-    where: {
-      id: req.params.user_id
+router.get('/', function(req, res) {
+  models.Question.findAll().then(function(question) {
+    res.send(JSON.stringify(question));
+  });
+})
+router.get('/:id', function(req, res) {
+  var id = req.params.id;
+  models.Question.findById(id).then(function(question) {
+    res.send(question);
+  });
+})
+
+router.post('/', function(req, res) {
+  console.log(req.body);
+  models.Question.create(req.body).then(function(question) {
+    res.send(JSON.stringify(question.description + ' Created'));
+  });
+})
+router.put('/:id', function(req, res) {
+  var id = req.params.id;
+  var updated_question = req.body;
+
+  models.Question.findById(id).then(function(question) {
+    if (question) {
+      question.update({
+        "description": new_question.description
+      }).then(function() {
+        res.send(JSON.stringify(updated_question.id + ' Updated'));
+      })
     }
-  }).then(function() {
-    res.redirect('/');
-  });
-});
 
-router.post('/:user_id/tasks/create', function(req, res) {
-  models.Task.create({
-    title: req.body.title,
-    UserId: req.params.user_id
-  }).then(function() {
-    res.redirect('/');
   });
-});
+})
 
-router.get('/:user_id/tasks/:task_id/destroy', function(req, res) {
-  models.Task.destroy({
-    where: {
-      id: req.params.task_id
-    }
-  }).then(function() {
-    res.redirect('/');
-  });
-});
+
 
 
 module.exports = router;
