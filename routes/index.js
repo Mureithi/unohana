@@ -5,7 +5,7 @@ var app = express();
 
 // Main Route
 router.get('/', function(req, res) {
-  res.send('Home')
+  res.render('index')
 });
 
 // Login
@@ -19,8 +19,5 @@ router.post('/login', function(req, res) {
     res.send(user)
   })
 });
-
-var users = require('./users');
-app.use('/users', users);
 
 module.exports = router;

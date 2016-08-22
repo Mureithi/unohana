@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col-md-12" ui-view="questions-widget-single-actions">
+
+  </div>
+  <div class="col-md-6">
+    <div class="inner card-sm">
+      <form ng-submit="edit()" method="post">
+        <h5>Details</h5>
+        <div class="form-group">
+          <label for="">Value</label>
+          <input class="form-control" type="text" ng-model="currentQuestion.value">
+        </div>
+        <div class="form-group">
+          <label for="">Tags</label>
+          <input class="form-control" type="text" ng-model="currentQuestion.tags">
+        </div>
+        <button type="submit" class="btn btn-success">Save</button>
+      </form>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <a ui-view="questions-widget-single-responses">
+
+    </a>
+  </div>
+
+  <div class="col-md-3">
+    <a ui-view="questions-widget-single-recent">
+
+    </a>
+  </div>
+  <div class="col-md-6" ui-view="questions-graph-single-frequency">
+
+  </div>
+  <div class="col-md-6" ui-view="questions-graph-single-responses">
+
+  </div>
+
+  <div class="col-md-6" ui-view="questions-graphic-distribution">
+
+  </div>
+</div>

@@ -1,9 +1,9 @@
 {
   "development": {
     "username": "root",
-    "password": "",
+    "password": "root",
     "database": "unohana",
-    "host": "127.0.0.1",
+    "host": "mysql",
     "dialect": "mysql",
     "secret": "secret"
   },

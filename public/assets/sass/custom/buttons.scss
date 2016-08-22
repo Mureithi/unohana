@@ -1,0 +1,56 @@
+
+.btn{
+  text-decoration: none;
+  border-radius:0 !important;
+  padding:10px 15px;
+  // color:white !important;
+ border:none;
+  -webkit-transition: none;
+  -moz-transition: none;
+  transition: none;
+  i{
+    padding:0 5px;
+  }
+}
+a{
+  color:$dark-gray;
+  i{
+    padding-right:0 5px;
+  }
+}
+.btn-dark{
+  background:$silver;
+  color:$dark-gray;
+}
+.btn-primary{
+  background:$madison;
+}
+.btn-info{
+  background:$picton-blue;
+  border:$picton-blue;
+}
+.btn-success{
+  background:$ocean-green;
+  border:$ocean-green;
+}
+.btn-danger{
+  background:$flamingo;
+  color:white !important;
+}
+.btn-default{
+  background:$carrara;
+  border-color:$silver;
+}
+.btn-animated:hover{
+  //box-shadow:0 2px $flamingo;
+  top: 2px !important;
+}
+.btn-animated:active{
+  //box-shadow:0 0 $madison;
+  top: 6px !important;
+}
+
+// Link
+.link,.link:hover{
+  color:$flamingo;
+}
