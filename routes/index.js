@@ -20,7 +20,4 @@ router.post('/login', function(req, res) {
   })
 });
 
-var users = require('./users');
-app.use('/users', users);
-
 module.exports = router;
