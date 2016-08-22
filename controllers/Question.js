@@ -2,52 +2,41 @@ var models = require('../models');
 var express = require('express');
 var router = express.Router();
 
-router.get('/', function(req, res) {
-  models.Question.findAll().then(function(questions) {
-    var response = {}
-    response.success = {}
-    response.success.message = "Found Records"
-    response.success.data = questions
-    res.json(response)
-  })
-});
-router.post('/', function(req, res) {
-  models.Question.create(req.body).then(function(questions) {
-    res.json(questions)
-  })
-});
 
+router.get('/', function(req, res) {
+  models.Question.findAll().then(function(question) {
+    res.send(JSON.stringify(question));
+  });
+})
+router.get('/:id', function(req, res) {
+  var id = req.params.id;
+  models.Question.findById(id).then(function(question) {
+    res.send(question);
+  });
+})
+
+router.post('/', function(req, res) {
+  console.log(req.body);
+  models.Question.create(req.body).then(function(question) {
+    res.send(JSON.stringify(question.description + ' Created'));
+  });
+})
 router.put('/:id', function(req, res) {
   var id = req.params.id;
-  var new_question = req.body;
-  models.User.findById(id).then(function(question) {
+  var updated_question = req.body;
+
+  models.Question.findById(id).then(function(question) {
     if (question) {
       question.update({
-        "value": new_question.value,
-        "tags": new_question.tags
+        "description": new_question.description
       }).then(function() {
-        res.send(JSON.stringify(question.value + ' Updated'));
+        res.send(JSON.stringify(updated_question.id + ' Updated'));
       })
     }
+
   });
-});
+})
 
-router.delete('/:id', function(req, res) {
-  models.Question.findAll().then(function(questions) {
-    res.json(questions)
-  })
-});
-
-router.post('/import', function(req, res) {
-
-
-  console.log('Importing File')
-
-
-  models.Question.findAll().then(function(questions) {
-    res.json(questions)
-  })
-});
 
 
 
