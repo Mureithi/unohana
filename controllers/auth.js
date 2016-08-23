@@ -12,7 +12,7 @@ var config = require('../config/config.json'); // get our config file
 app.set('superSecret', config.development.secret); // secret variable
 
 // route to authenticate a user (POST http://localhost:3000/authenticate)
-router.post('/auth', function(req, res) {
+router.post('/', function(req, res) {
 
   // find the user
   models.User.findOne({

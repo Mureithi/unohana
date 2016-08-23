@@ -5,6 +5,7 @@ var bowerNormalizer = require('gulp-bower-normalize');
 var clean = require('gulp-clean');
 var concat = require('gulp-concat');
 var order = require('gulp-order');
+var sass = require('gulp-sass');
 
 var paths = {
   scripts: 'public/app/**/*.js',
@@ -28,26 +29,21 @@ var paths = {
 /*
  * Compile Assets
  */
-gulp.task('compile', function() {
+ gulp.task('scripts', function() {
+   return gulp.src('./public/app/**/*.js')
+     .pipe(concat('app.js'))
+     .pipe(gulp.dest('./public/js/'));
+ });
 
+ gulp.task('sass', function () {
+   return gulp.src('./public/assets/sass/styles.scss')
+     .pipe(sass().on('error', sass.logError))
+     .pipe(gulp.dest('./public/css'));
+ });
 
-
-  elixir(function(mix) {
-    // Process SASS files
-    mix.sass('styles.scss', 'public/css/app.css')
-      .stylesIn('public/libs/css', 'public/css/libs.css')
-      // Concatenate Angular JS files
-      .scriptsIn('public/app', 'public/js/app.js')
-      //Versioning Files
-      .scriptsIn('public/libs/js', 'public/js/libs.js')
-      .version(['public/js/app.js', 'public/css/app.css',
-        'public/js/libs.js', 'public/css/libs.css'
-      ]);
-
-
-
-  });
-});
+ gulp.task('sass:watch', function () {
+   gulp.watch('./sass/**/*.scss', ['sass']);
+ });
 
 gulp.task('process-libs', function() {
   elixir(function(mix) {
@@ -85,6 +81,5 @@ gulp.task('watch', function() {
 });
 
 // Default Task
-gulp.task('default', ['clean', 'bower',
-  'compile', 'move_fonts'
+gulp.task('default', ['clean', 'bower', 'move_fonts','scripts','sass'
 ]);
