@@ -14,7 +14,8 @@ angular.module("unohana", [
   'angularValidator',
   'btford.socket-io',
   'angular-loading-bar',
-  'angular.filter'
+  'retsu.questions',
+  'retsu.users'
 ]);
 
 
@@ -34,6 +35,11 @@ angular.module("unohana").run(['$http', '$rootScope', '$state', function($http,
   rootScope.menu = [];
   rootScope.errors = [];
   rootScope.state = state;
+}]);
+
+angular.module("unohana").controller('appCtrl', ['$location', function(
+  $location) {
+    console.log('Hello');
 }]);
 
 /**
@@ -89,168 +95,97 @@ angular.module("unohana").directive('isActiveLink', ['$location', function(
  * @param $stateProvider {service}
  * @param $urlRouterProvider {service}
  */
+ angular.module("unohana").config(function($stateProvider, $urlRouterProvider) {
+   $urlRouterProvider.otherwise("/login");
+ });
 
-angular.module('unohana').controller('adminCtrl', ['$scope', 'Requests',
+angular.module('retsu.admin',[]).controller('adminCtrl', ['$scope', 'Requests',
   '$state',
   function(scope, Requests, state) {
-
+    console.log('Yo')
   }
 ])
 
-angular.module('unohana').controller('dashboardCtrl', ['$scope', 'Requests',
-  '$state',
-  function(scope, Requests, state) {
-
-  }
-])
-
-angular.module("unohana").config(function($stateProvider, $urlRouterProvider) {
+angular.module("retsu.admin",[]).config(function($stateProvider, $urlRouterProvider) {
   // urlRouterProvider.otherwise("/");
-  $stateProvider.state('admin', {
-    url: '/admin',
+});
+
+angular.module('retsu.users',[]).controller('usersCtrl', ['$scope', 'Requests',
+  '$state',
+  function(scope, Requests, state) {
+    scope.user = {};
+
+    scope.filterOptions = ['Date', 'Tags'];
+
+    function get() {
+      var payload = {};
+      Requests.get('questions', payload, function(data) {
+        scope.questions = data.success.data;
+      });
+    }
+
+    scope.add = function add() {
+      var payload = scope.question;
+      Requests.post('questions', payload, function(data) {
+        scope.question = data.success.data;
+      });
+    }
+
+    scope.login = function login() {
+      var payload = scope.user;
+      Requests.post('auth', payload, function(data) {
+        console.log(data)
+        if(data.success){
+          scope.user = data.user;
+          state.go('admin.dashboard')
+        }
+
+      });
+    }
+
+    scope.edit = function edit() {
+      var payload = scope.question;
+      Requests.put('questions/' + payload.id, payload, function(data) {
+        scope.question = data.success.data;
+      });
+    }
+
+    scope.view = function view(question) {
+      scope.currentQuestion = question;
+      state.go('questions.view')
+    }
+  }
+])
+
+angular.module('retsu.users').config(function($stateProvider, $urlRouterProvider) {
+
+  $stateProvider.state('users', {
+    url: '/users',
     views: {
       '': {
-        controller: 'adminCtrl',
-        templateUrl: 'app/admin/admin.main.tpl.html',
-      },
-      'admin.breadcrumb@admin': {
-        templateUrl: 'app/admin/admin.breadcrumb.tpl.html',
+        templateUrl: 'app/questions/questions.main.tpl.html'
+      }
+    }
+
+  }).
+  state('login', {
+    url: '/login',
+    views: {
+      '': {
+        controller: 'usersCtrl',
+        templateUrl: 'app/retsu/users/users.login.tpl.html'
       }
     }
   })
-  .state('admin.dashboard', {
-    url: '/dashboard',
-    views: {
-      '': {
-        controller: 'dashboardCtrl',
-        templateUrl: 'app/admin/admin.dashboard.tpl.html',
-      }
-    }
-  });
 });
 
-angular.module("unohana").directive('pushMenu', ['$rootScope', '$timeout',
-  function(rootScope,
-    timeout) {
-    return {
-      restrict: 'A',
-      link: function(scope, element) {
-        init();
-        var main = $('#main');
-        $('.menu-btn').click(function() {
-          toggle();
-        })
-
-        function init() {
-          element.addClass('menu');
-          hide();
-        }
-
-        function show() {
-          element.removeClass('menu-hidden');
-          $('#main').addClass('pushed');
-          $('#main').css({
-            'left': 200
-          });
-
-          $('#main').append('<div class="overlay"></div>')
-          var overlay = $('#main.pushed .overlay');
-          overlay.click(function() {
-            hide();
-          })
-        }
-
-        function hide() {
-          element.addClass('menu-hidden');
-          $('#main').css({
-            'left': 0
-          });
-          $('#main').removeClass('pushed');
-          $('.overlay').remove();
-        }
-
-        function toggle() {
-          if (element.hasClass('menu-hidden')) {
-            show();
-          } else {
-            hide();
-          }
-        }
-        rootScope.$watch('parent', function() {
-          hide();
-        })
-      }
-    };
-  }
-]);
-
-angular.module("unohana").directive('rmValidate', ['$rootScope', '$timeout',
-  function(rootScope,
-    timeout) {
-    return {
-      restrict: 'A',
-      require: "^form",
-      link: function(scope, element, attrs, form) {
-        var message = element.attr('data-message')
-        var name = element.attr('name');
-        var form_name = form.$name
-        var rm_class = "{'has-error':" + form_name + "." + name +
-          ".$invalid}";
-        element.attr('ng-class', rm_class);
-        var inline_error = $.parseHTML("<p></p>");
-        $(inline_error).attr('class', 'inline-error');
-        $(inline_error).attr('ng-show', form_name + "." + name +
-          ".$invalid");
-        $(inline_error).text(message);
-        element.parent().append(inline_error);
-      }
-    };
-  }
-]);
-
-angular.module("unohana", [
-  'ui.router',
-  'restangular',
-  'smart-table',
-  'chart.js',
-  'textAngular',
-  'angularMoment',
-  'ui.bootstrap',
-  'highcharts-ng',
-  'slick',
-  'mgo-angular-wizard',
-  'permission',
-  'LocalStorageModule',
-  'angularValidator',
-  'btford.socket-io',
-  'angular-loading-bar'
-]);
-
-
-/**
- * @ngdoc run
- * @name Main
- * @requires $http
- * @requires $rootScope
- * @memberof ClientApp
- */
-angular.module("unohana").run(['$http', '$rootScope', '$state', function($http,
-  rootScope,
-  state) {
-  rootScope.date = new Date();
-  rootScope.title = 'KE.scrow';
-  rootScope.messages = [];
-  rootScope.menu = [];
-  rootScope.errors = [];
-  rootScope.state = state;
-}]);
-
-
-angular.module('unohana').controller('questionsCtrl', ['$scope', 'Requests',
+angular.module('retsu.questions',[]).controller('questionsCtrl', ['$scope', 'Requests',
   '$state',
   function(scope, Requests, state) {
+    console.log('Yo');
     scope.responses = []
-    scope.question = {}
+    scope.question = {};
+    scope.questions = [];
     scope.currentQuestion = {}
 
     scope.filterOptions = ['Date', 'Tags'];
@@ -278,13 +213,13 @@ angular.module('unohana').controller('questionsCtrl', ['$scope', 'Requests',
 
     scope.view = function view(question) {
       scope.currentQuestion = question;
-      state.go('questions.view')
+      state.go('admin.questions.view')
     }
   }
 ])
 
 
-angular.module('unohana').directive('qTable', function() {
+angular.module('retsu.questions',[]).directive('qTable', function() {
   return {
     controller: 'questionsCtrl',
     // transclude: true,
@@ -300,7 +235,7 @@ angular.module('unohana').directive('qTable', function() {
   };
 });
 
-angular.module('unohana').directive('qDash', function() {
+angular.module('retsu.questions').directive('qDash', function() {
   return {
     controller: 'questionsCtrl',
     // transclude: true,
@@ -315,17 +250,16 @@ angular.module('unohana').directive('qDash', function() {
 });
 
 
-angular.module('unohana').config(function($stateProvider, $urlRouterProvider) {
+angular.module('retsu.questions',[]).config(function($stateProvider, $urlRouterProvider) {
 
   $stateProvider.state('questions', {
     url: '/questions',
     views: {
       '': {
         controller: "questionsCtrl",
-        templateUrl: 'app/questions/questions.main.tpl.html'
+        templateUrl: 'app/retsu/questions/questions.main.tpl.html'
       }
     }
-
   }).
   state('questions.dashboard', {
     url: '/dashboard',
@@ -334,19 +268,19 @@ angular.module('unohana').config(function($stateProvider, $urlRouterProvider) {
         template: '<q-dash></q-dash>'
       },
       'questions-total-widget@questions.dashboard': {
-        templateUrl: 'app/questions/questions.widget.total.tpl.html'
+        templateUrl: 'app/retsu/questions/questions.widget.total.tpl.html'
       },
       'questions-responses-widget@questions.dashboard': {
-        templateUrl: 'app/questions/questions.widget.responses.tpl.html'
+        templateUrl: 'app/retsu/questions/questions.widget.responses.tpl.html'
       },
       'questions-recent-widget@questions.dashboard': {
-        templateUrl: 'app/questions/questions.widget.recent.tpl.html'
+        templateUrl: 'app/retsu/questions/questions.widget.recent.tpl.html'
       },
       'questions-actions-widget@questions.dashboard': {
-        templateUrl: 'app/questions/questions.widget.actions.tpl.html'
+        templateUrl: 'app/retsu/questions/questions.widget.actions.tpl.html'
       },
       'questions-frequency-widget@questions.dashboard': {
-        templateUrl: 'app/questions/questions.graph.frequency.tpl.html'
+        templateUrl: 'app/retsu/questions/questions.graph.frequency.tpl.html'
       }
     }
   }).
@@ -356,31 +290,31 @@ angular.module('unohana').config(function($stateProvider, $urlRouterProvider) {
   }).
   state('questions.add', {
     url: '/add',
-    templateUrl: 'app/questions/questions.add.tpl.html'
+    templateUrl: 'app/retsu/questions/questions.add.tpl.html'
   }).
   state('questions.view', {
     url: '/view',
     views: {
       '': {
-        templateUrl: 'app/questions/questions.view.tpl.html'
+        templateUrl: 'app/retsu/questions/questions.view.tpl.html'
       },
       'questions-widget-single-responses@questions.view': {
-        templateUrl: 'app/questions/questions.widget.single.responses.tpl.html'
+        templateUrl: 'app/retsu/questions/questions.widget.single.responses.tpl.html'
       },
       'questions-widget-single-recent@questions.view': {
-        templateUrl: 'app/questions/questions.widget.single.recent.tpl.html'
+        templateUrl: 'app/retsu/questions/questions.widget.single.recent.tpl.html'
       },
       'questions-graph-single-frequency@questions.view': {
-        templateUrl: 'app/questions/questions.graph.single.frequency.tpl.html'
+        templateUrl: 'app/retsu/questions/questions.graph.single.frequency.tpl.html'
       },
       'questions-graph-single-responses@questions.view': {
-        templateUrl: 'app/questions/questions.graph.single.responses.tpl.html'
+        templateUrl: 'app/retsu/questions/questions.graph.single.responses.tpl.html'
       },
       'questions-graphic-distribution@questions.view': {
-        templateUrl: 'app/questions/questions.graphic.distribution.tpl.html'
+        templateUrl: 'app/retsu/questions/questions.graphic.distribution.tpl.html'
       },
       'questions-widget-single-actions@questions.view': {
-        templateUrl: 'app/questions/questions.widget.single.actions.tpl.html'
+        templateUrl: 'app/retsu/questions/questions.widget.single.actions.tpl.html'
       }
     }
 
@@ -612,73 +546,3 @@ angular.module('unohana').factory('Requests', ['$http', '$rootScope', function(
   }
   return Requests;
 }])
-
-angular.module('unohana').controller('usersCtrl', ['$scope', 'Requests',
-  '$state',
-  function(scope, Requests, state) {
-    scope.user = {};
-
-    scope.filterOptions = ['Date', 'Tags'];
-
-    function get() {
-      var payload = {};
-      Requests.get('questions', payload, function(data) {
-        scope.questions = data.success.data;
-      });
-    }
-
-    scope.add = function add() {
-      var payload = scope.question;
-      Requests.post('questions', payload, function(data) {
-        scope.question = data.success.data;
-      });
-    }
-
-    scope.login = function login() {
-      var payload = scope.user;
-      Requests.post('auth', payload, function(data) {
-        console.log(data)
-        if(data.success){
-          scope.user = data.user;
-          state.go('admin.dashboard')
-        }
-
-      });
-    }
-
-    scope.edit = function edit() {
-      var payload = scope.question;
-      Requests.put('questions/' + payload.id, payload, function(data) {
-        scope.question = data.success.data;
-      });
-    }
-
-    scope.view = function view(question) {
-      scope.currentQuestion = question;
-      state.go('questions.view')
-    }
-  }
-])
-
-angular.module('unohana').config(function($stateProvider, $urlRouterProvider) {
-
-  $stateProvider.state('users', {
-    url: '/users',
-    views: {
-      '': {
-        controller: "usersCtrl",
-        templateUrl: 'app/questions/questions.main.tpl.html'
-      }
-    }
-
-  }).
-  state('login', {
-    url: '/login',
-    views: {
-      '': {
-        controller: "usersCtrl",
-        templateUrl: 'app/users/users.login.tpl.html'
-      }
-    }
-  })
-});

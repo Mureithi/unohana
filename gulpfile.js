@@ -6,10 +6,12 @@ var clean = require('gulp-clean');
 var concat = require('gulp-concat');
 var order = require('gulp-order');
 var sass = require('gulp-sass');
+var refresh = require('gulp-refresh')
 
 var paths = {
   scripts: 'public/app/**/*.js',
-  sass: 'resources/sass/styles.scss'
+  sass: 'public/assets/sass/**/*.scss',
+  html: 'public/app/**/*.html'
 };
 
 
@@ -32,17 +34,15 @@ var paths = {
  gulp.task('scripts', function() {
    return gulp.src('./public/app/**/*.js')
      .pipe(concat('app.js'))
-     .pipe(gulp.dest('./public/js/'));
+     .pipe(gulp.dest('./public/js/'))
+     .pipe(refresh());
  });
 
  gulp.task('sass', function () {
    return gulp.src('./public/assets/sass/styles.scss')
      .pipe(sass().on('error', sass.logError))
-     .pipe(gulp.dest('./public/css'));
- });
-
- gulp.task('sass:watch', function () {
-   gulp.watch('./sass/**/*.scss', ['sass']);
+     .pipe(gulp.dest('./public/css'))
+     .pipe(refresh());
  });
 
 gulp.task('process-libs', function() {
@@ -64,7 +64,7 @@ gulp.task('bower', function() {
 
 gulp.task('move_fonts', function() {
   gulp.src('public/libs/fonts/**/*')
-    .pipe(gulp.dest('public/build/fonts'));
+    .pipe(gulp.dest('public/fonts'));
 });
 
 gulp.task('clean', function() {
@@ -76,10 +76,12 @@ gulp.task('clean', function() {
 
 // Watch for changes
 gulp.task('watch', function() {
-  gulp.watch(paths.scripts, ['compile']);
-  gulp.watch(paths.sass, ['compile']);
+  refresh.listen();
+  gulp.watch(paths.scripts, ['scripts']);
+  gulp.watch(paths.sass, ['sass']);
+  gulp.watch(paths.html, ['scripts']);
 });
 
 // Default Task
-gulp.task('default', ['clean', 'bower', 'move_fonts','scripts','sass'
+gulp.task('default', ['bower', 'move_fonts','scripts','sass'
 ]);

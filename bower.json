@@ -35,7 +35,6 @@
     "headroom.js": "~0.7.0",
     "highcharts-ng": "~0.0.8",
     "highcharts": "~4.1.7",
-    "lato": "~0.3.0",
     "angular-mapbox": "~0.1.4",
     "angular-leaflet-directive": "~0.8.5",
     "leaflet.markercluster": "0.4.0-hotfix.1",
@@ -52,10 +51,39 @@
     "ink": "~1.0.5",
     "socket.io": "~1.4.5",
     "angular-socket-io": "~0.7.0",
-    "angular-loading-bar": "~0.8.0"
+    "angular-loading-bar": "~0.8.0",
+    "Ionicons": "ionicons#^2.0.1"
   },
   "resolutions": {
     "angular": "1.3.11",
     "angular-bootstrap": "~0.12.0"
+  },
+  "overrides": {
+    "normalizeMulti": [
+      {
+        "dependencies": [
+          "lato",
+          "ionicons",
+          "font-awesome",
+          "octicons",
+          "slick",
+          "angular-leaflet-directive"
+        ],
+        "normalize": {
+          "images": [
+            "*.jpeg",
+            "*.png",
+            "*.jpg"
+          ],
+          "fonts": [
+            "*.ttf",
+            "*.woff2",
+            "*.svg",
+            "*.eot",
+            "*.otf"
+          ]
+        }
+      }
+    ]
   }
 }

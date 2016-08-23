@@ -5595,12 +5595,22 @@ a:hover {
   .cards .cards {
     padding: 0 !important; }
 
-.dashboard.buttons .btn {
-  width: 45%;
-  margin-bottom: 10px; }
-
-.dashboard.buttons .btn:nth-child(even) {
-  float: right; }
+.dashboard {
+  height: 120px; }
+  .dashboard.buttons .btn {
+    width: 50%;
+    height: 50%;
+    margin-bottom: 0px; }
+    .dashboard.buttons .btn i {
+      float: right;
+      font-size: 2em; }
+    .dashboard.buttons .btn div {
+      margin-top: 10px;
+      display: inline-block; }
+  .dashboard.buttons .btn:nth-child(even) {
+    float: right; }
+    .dashboard.buttons .btn:nth-child(even) i {
+      float: left; }
 
 nav#account {
   background: #2C3E50;
@@ -6099,7 +6109,8 @@ form h6 {
   font-style: italic; }
 
 form input, form textarea, form select {
-  border-radius: 0 !important; }
+  border-radius: 0 !important;
+  margin-bottom: 1em !important; }
 
 form textarea {
   min-height: 150px; }
@@ -6175,6 +6186,12 @@ ul.steps-indicator {
   ul.steps-indicator li.editing a:before {
     background: #EF4836;
     border-radius: 0 !important; }
+
+.login {
+  background: white;
+  padding: 5%;
+  border-radius: 3px;
+  opacity: 0.9; }
 
 .message {
   padding: 0; }
@@ -6376,6 +6393,7 @@ img.normal, .logo div img.img-responsive:hover, .logo div img:hover {
   padding: 2% 25%; }
 
 body {
+  color: black !important;
   background: whitesmoke;
   margin-bottom: 0; }
 
@@ -6448,6 +6466,23 @@ p.null-message {
 
 .account {
   color: #59ABE3; }
+
+.bg-red {
+  background: #C80730;
+  background: linear-gradient(to bottom right, #B52352, #EF2B35); }
+
+.bg-blue {
+  background: #540582;
+  background: -moz-linear-gradient(-45deg, #540582 0%, #5f8bfa 100%);
+  background: -webkit-gradient(left top, right bottom, color-stop(0%, #540582), color-stop(100%, #5f8bfa));
+  background: -webkit-linear-gradient(-45deg, #540582 0%, #5f8bfa 100%);
+  background: -o-linear-gradient(-45deg, #540582 0%, #5f8bfa 100%);
+  background: -ms-linear-gradient(-45deg, #540582 0%, #5f8bfa 100%);
+  background: linear-gradient(135deg, #540582 0%, #5f8bfa 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#540582', endColorstr='#5f8bfa', GradientType=1 ); }
+
+.full-content {
+  height: 100%; }
 
 table {
   background: white;

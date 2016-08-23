@@ -113,6 +113,7 @@ img.normal{
   padding:2% 25%;
 }
 body{
+  color:black !important;
   background:whitesmoke;
   margin-bottom: 0;
 }
@@ -208,4 +209,23 @@ p.null-message{
 }
 .account{
   color:$picton-blue;
+}
+
+.bg-red {
+    background: #C80730;
+    background: linear-gradient(to bottom right, #B52352, #EF2B35);
+}
+.bg-blue {
+  background: rgba(84,5,130,1);
+  background: -moz-linear-gradient(-45deg, rgba(84,5,130,1) 0%, rgba(95,139,250,1) 100%);
+  background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(84,5,130,1)), color-stop(100%, rgba(95,139,250,1)));
+  background: -webkit-linear-gradient(-45deg, rgba(84,5,130,1) 0%, rgba(95,139,250,1) 100%);
+  background: -o-linear-gradient(-45deg, rgba(84,5,130,1) 0%, rgba(95,139,250,1) 100%);
+  background: -ms-linear-gradient(-45deg, rgba(84,5,130,1) 0%, rgba(95,139,250,1) 100%);
+  background: linear-gradient(135deg, rgba(84,5,130,1) 0%, rgba(95,139,250,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#540582', endColorstr='#5f8bfa', GradientType=1 );
+}
+
+.full-content{
+  height:100%;
 }

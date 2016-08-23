@@ -5,3 +5,6 @@
  * @param $stateProvider {service}
  * @param $urlRouterProvider {service}
  */
+ angular.module("unohana").config(function($stateProvider, $urlRouterProvider) {
+   $urlRouterProvider.otherwise("/login");
+ });
