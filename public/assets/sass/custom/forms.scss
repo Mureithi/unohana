@@ -24,6 +24,12 @@ border:1px solid $silver;
   }
 }
 form{
+  .title,.header{
+    padding:0 !important;
+    color:$madison !important;
+    border-bottom:1px solid $light-gray !important;
+    margin-bottom: 1em !important;
+  }
   h6{
     margin-bottom:0;
     color:$dark-gray;

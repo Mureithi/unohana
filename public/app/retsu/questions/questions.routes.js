@@ -1,70 +1,70 @@
-angular.module('retsu.questions',[]).config(function($stateProvider, $urlRouterProvider) {
+angular.module('retsu.questions').config(function($stateProvider, $urlRouterProvider) {
 
-  $stateProvider.state('questions', {
+  $stateProvider.state('admin.questions', {
     url: '/questions',
     views: {
       '': {
         controller: "questionsCtrl",
-        templateUrl: 'app/retsu/questions/questions.main.tpl.html'
+        templateUrl: VIEW._modules('questions/questions.main')
       }
     }
   }).
-  state('questions.dashboard', {
+  state('admin.questions.dashboard', {
     url: '/dashboard',
     views: {
       '': {
         template: '<q-dash></q-dash>'
       },
-      'questions-total-widget@questions.dashboard': {
-        templateUrl: 'app/retsu/questions/questions.widget.total.tpl.html'
+      'questions-total-widget@admin.questions.dashboard': {
+        templateUrl: VIEW._modules('questions/questions.widget.total')
       },
-      'questions-responses-widget@questions.dashboard': {
-        templateUrl: 'app/retsu/questions/questions.widget.responses.tpl.html'
+      'questions-responses-widget@admin.questions.dashboard': {
+        templateUrl: VIEW._modules('questions/questions.widget.responses')
       },
-      'questions-recent-widget@questions.dashboard': {
-        templateUrl: 'app/retsu/questions/questions.widget.recent.tpl.html'
+      'questions-recent-widget@admin.questions.dashboard': {
+        templateUrl: VIEW._modules('questions/questions.widget.recent')
       },
-      'questions-actions-widget@questions.dashboard': {
-        templateUrl: 'app/retsu/questions/questions.widget.actions.tpl.html'
+      'questions-actions-widget@admin.questions.dashboard': {
+        templateUrl: VIEW._modules('questions/questions.widget.actions')
       },
-      'questions-frequency-widget@questions.dashboard': {
-        templateUrl: 'app/retsu/questions/questions.graph.frequency.tpl.html'
+      'questions-frequency-widget@admin.questions.dashboard': {
+        templateUrl: VIEW._modules('questions/questions.graph.frequency')
       }
     }
   }).
-  state('questions.list', {
+  state('admin.questions.list', {
     url: '/list',
     template: '<q-table st-table="questions"></q-table>'
   }).
-  state('questions.add', {
+  state('admin.questions.add', {
     url: '/add',
-    templateUrl: 'app/retsu/questions/questions.add.tpl.html'
+    templateUrl: VIEW._modules('questions/questions.add')
   }).
-  state('questions.view', {
+  state('admin.questions.view', {
     url: '/view',
     views: {
       '': {
-        templateUrl: 'app/retsu/questions/questions.view.tpl.html'
+        controller: "questionsCtrl",
+        templateUrl: VIEW._modules('questions/questions.view')
       },
-      'questions-widget-single-responses@questions.view': {
-        templateUrl: 'app/retsu/questions/questions.widget.single.responses.tpl.html'
+      'questions-widget-single-responses@admin.questions.view': {
+        templateUrl: VIEW._modules('questions/questions.widget.single.responses')
       },
-      'questions-widget-single-recent@questions.view': {
-        templateUrl: 'app/retsu/questions/questions.widget.single.recent.tpl.html'
+      'questions-widget-single-recent@admin.questions.view': {
+        templateUrl: VIEW._modules('questions/questions.widget.single.recent')
       },
-      'questions-graph-single-frequency@questions.view': {
-        templateUrl: 'app/retsu/questions/questions.graph.single.frequency.tpl.html'
+      'questions-graph-single-frequency@admin.questions.view': {
+        templateUrl: VIEW._modules('questions/questions.graph.single.frequency')
       },
-      'questions-graph-single-responses@questions.view': {
-        templateUrl: 'app/retsu/questions/questions.graph.single.responses.tpl.html'
+      'questions-graph-single-responses@admin.questions.view': {
+        templateUrl: VIEW._modules('questions/questions.graph.single.responses')
       },
-      'questions-graphic-distribution@questions.view': {
-        templateUrl: 'app/retsu/questions/questions.graphic.distribution.tpl.html'
+      'questions-graphic-distribution@admin.questions.view': {
+        templateUrl: VIEW._modules('questions/questions.graphic.distribution')
       },
-      'questions-widget-single-actions@questions.view': {
-        templateUrl: 'app/retsu/questions/questions.widget.single.actions.tpl.html'
+      'questions-widget-single-actions@admin.questions.view': {
+        templateUrl: VIEW._modules('questions/questions.widget.single.actions')
       }
     }
-
   })
 });

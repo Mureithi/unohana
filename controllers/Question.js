@@ -8,6 +8,7 @@ router.get('/', function(req, res) {
     res.send(JSON.stringify(question));
   });
 })
+
 router.get('/:id', function(req, res) {
   var id = req.params.id;
   models.Question.findById(id).then(function(question) {
@@ -16,11 +17,17 @@ router.get('/:id', function(req, res) {
 })
 
 router.post('/', function(req, res) {
-  console.log(req.body);
   models.Question.create(req.body).then(function(question) {
-    res.send(JSON.stringify(question.description + ' Created'));
+    res.send(
+      {
+        success:true,
+        message:question.description+ ' has been created',
+        question:question
+      }
+    );
   });
 })
+
 router.put('/:id', function(req, res) {
   var id = req.params.id;
   var updated_question = req.body;
@@ -36,8 +43,5 @@ router.put('/:id', function(req, res) {
 
   });
 })
-
-
-
 
 module.exports = router;

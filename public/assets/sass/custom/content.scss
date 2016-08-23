@@ -1,11 +1,26 @@
 // Body
-body{
-  overflow-x: hidden;
+html,body{
+  height:100%;
+  overflow-y:hidden;
+  > div{
+    height:100%;
+    overflow-y:hidden;
+    > div{
+      height:100%;
+      overflow-y:hidden;
+      > div.row{
+        height:100%;
+        overflow-y:hidden;
+      }
+    }
+  }
 }
 div#main{
   background: whitesmoke;
 }
-
+.row{
+  margin:0 !important;
+}
 // Content
 .transparent{
   background:transparent !important;
@@ -21,7 +36,7 @@ div#main{
   padding:5% 35%;
 }
 .content.padded{
-  padding:1% 10% 10% 10%;
+  padding:1%;
 }
 .content.gray{
   background:#f6f6f6;

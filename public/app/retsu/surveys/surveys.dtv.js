@@ -1,9 +1,9 @@
-angular.module('retsu.questions').directive('qTable', function() {
+angular.module('retsu.surveys').directive('sTable', function() {
   return {
-    controller: 'questionsCtrl',
+    controller: 'surveysCtrl',
     // transclude: true,
 
-    templateUrl: VIEW._modules('questions/questions.table'),
+    templateUrl: VIEW._modules('surveys/surveys.table'),
     link: function(scope, element) {
       // Add Attributes
 
@@ -14,12 +14,12 @@ angular.module('retsu.questions').directive('qTable', function() {
   };
 });
 
-angular.module('retsu.questions').directive('qDash', function() {
+angular.module('retsu.surveys').directive('sDash', function() {
   return {
-    controller: 'questionsCtrl',
+    controller: 'surveysCtrl',
     // transclude: true,
 
-    templateUrl: VIEW._modules('questions/questions.dash'),
+    templateUrl: VIEW._modules('surveys/surveys.dash'),
     link: function(scope, element) {
       // Add Attributes
 

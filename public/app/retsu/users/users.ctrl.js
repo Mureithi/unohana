@@ -15,17 +15,18 @@ angular.module('retsu.users',[]).controller('usersCtrl', ['$scope', 'Requests',
     scope.add = function add() {
       var payload = scope.question;
       Requests.post('questions', payload, function(data) {
-        scope.question = data.success.data;
+        if(data.success){
+          state.go('admin.questions.list')
+        }
       });
     }
 
     scope.login = function login() {
       var payload = scope.user;
       Requests.post('auth', payload, function(data) {
-        console.log(data)
         if(data.success){
           scope.user = data.user;
-          state.go('admin.dashboard')
+          state.go('admin.questions.dashboard')
         }
 
       });

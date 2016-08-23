@@ -20,10 +20,9 @@ angular.module("unohana").factory('errorInterceptor', ['$q', '$log',
             "type": "success",
             "code": response.status,
             "msg": response.statusText,
-            "message": response.data.success.message
+            "message": response.data.message
           };
           rootScope.success = success;
-          console.log(rootScope.success);
           rootScope.showSuccess = true;
           timeout(function() {
             rootScope.showSuccess = false;
@@ -36,13 +35,13 @@ angular.module("unohana").factory('errorInterceptor', ['$q', '$log',
       // optional method
       'responseError': function(response) {
         console.log(response);
-        if (response.data) {
+        if (!response.data.success) {
           var error = {
             "icon": "ion-android-alert",
             "type": "danger",
             "code": response.status,
             "msg": response.statusText,
-            "message": response.data.error.message
+            "message": response.data.message
           };
           rootScope.error = error;
           rootScope.showError = true;

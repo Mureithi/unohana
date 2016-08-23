@@ -1,0 +1,11 @@
+{
+  "name": "Chart",
+  "_cacheHeaders": {
+    "Content-Type": "text/html; charset=utf-8"
+  },
+  "main": "index.js",
+  "_source": "https://github.com/chartjs/Chart.js",
+  "_target": "*",
+  "_originalSource": "https://github.com/chartjs/Chart.js",
+  "_direct": true
+}

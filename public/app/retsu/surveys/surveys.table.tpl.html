@@ -1,10 +1,10 @@
 <form class="transparent" method="post">
   <div class="row">
     <div class="col-md-12" style="padding:0">
-      <a ui-sref="admin.questions.add" type="button" class="btn btn-success" name="button"><i class="ion-plus-round"></i>Add Question</a>
+      <a ui-sref="admin.surveys.add" type="button" class="btn btn-success" name="button"><i class="ion-plus-round"></i>Add Survey</a>
     </div>
     <div class="form-group col-md-8" style="padding:0">
-       There are <strong>{{questions.length}}</strong> records.
+       There are <strong>{{surveys.length}}</strong> records.
     </div>
     <div class="form-group col-md-4" style="padding:0">
        <input type="search" name="search" st-search="value" placeholder="Search Here...">
@@ -14,7 +14,7 @@
 <table>
   <thead>
     <tr>
-      <th ng-repeat="(k,v) in questions[0]" st-sort="k" ng-if="k!='createdAt' && k!='updatedAt' && k!='updated_at' && k!='created_at'">
+      <th ng-repeat="(k,v) in surveys[0]" st-sort="k" ng-if="k!='createdAt' && k!='updatedAt' && k!='updated_at' && k!='created_at'">
         <span ng-bind="k.toUpperCase()"></span>
       </th>
       <th>
@@ -23,18 +23,18 @@
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="question in questions">
-      <td ng-repeat="(k,v) in question" ng-if="k!='createdAt' && k!='updatedAt' && k!='updated_at' && k!='created_at'">
+    <tr ng-repeat="survey in surveys">
+      <td ng-repeat="(k,v) in survey" ng-if="k!='createdAt' && k!='updatedAt' && k!='updated_at' && k!='created_at'">
         <span ng-bind="v"></span>
       </td>
       <td>
-        <button ng-click="view(question)" type="button" name="button" class="btn btn-primary"><i class="ion-eye"></i>View</button>
+        <button ng-click="view(survey)" type="button" name="button" class="btn btn-primary"><i class="ion-eye"></i>View</button>
       </td>
     </tr>
   </tbody>
   <tfoot>
     <tr>
-      <th ng-repeat="(k,v) in questions[0]" ng-if="k!='createdAt' && k!='updatedAt' && k!='updated_at' && k!='created_at'">
+      <th ng-repeat="(k,v) in surveys[0]" ng-if="k!='createdAt' && k!='updatedAt' && k!='updated_at' && k!='created_at'">
         <span ng-bind="k.toUpperCase()"></span>
       </th>
       <th>

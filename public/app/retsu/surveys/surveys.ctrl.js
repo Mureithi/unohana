@@ -1,9 +1,9 @@
-angular.module('retsu.questions',[]).controller('questionsCtrl', ['$scope', 'Requests',
+angular.module('retsu.surveys',[]).controller('surveysCtrl', ['$scope', 'Requests',
   '$state',
   function(scope, Requests, state) {
     scope.responses = []
-    scope.question = {};
-    scope.questions = [];
+    scope.survey = {};
+    scope.surveys = [];
 
     scope.filterOptions = ['Date', 'Tags'];
     get();
@@ -11,8 +11,8 @@ angular.module('retsu.questions',[]).controller('questionsCtrl', ['$scope', 'Req
 
     function get() {
       var payload = {};
-      Requests.get('questions', payload, function(data) {
-        scope.questions = data;
+      Requests.get('surveys', payload, function(data) {
+        scope.surveys = data;
       });
     }
 
@@ -42,26 +42,26 @@ angular.module('retsu.questions',[]).controller('questionsCtrl', ['$scope', 'Req
     }
 
     scope.add = function add() {
-      var payload = scope.question;
-      Requests.post('questions', payload, function(data) {
+      var payload = scope.survey;
+      Requests.post('surveys', payload, function(data) {
         if(data.success){
-          state.go('admin.questions.list')
+          state.go('admin.surveys.list')
         }
       });
     }
     scope.edit = function edit() {
-      var payload = scope.question;
-      Requests.put('questions/' + payload.id, payload, function(data) {
+      var payload = scope.survey;
+      Requests.put('surveys/' + payload.id, payload, function(data) {
         if(data.success){
-          state.go('admin.questions.list')
+          state.go('admin.surveys.list')
         }
       });
     }
 
-    scope.view = function view(question) {
-      console.log(question)
-      scope.currentQuestion = question;
-      state.go('admin.questions.view')
+    scope.view = function view(survey) {
+      console.log(survey)
+      scope.currentQuestion = survey;
+      state.go('admin.surveys.view')
     }
   }
 ])

@@ -1,3 +1,17 @@
+var PATH = {
+  _modules:'app/retsu/',
+  _globals:'app/yon/'
+}
+
+var VIEW ={
+  _modules:function(path){
+    return PATH._modules+path+'.tpl.html'
+  },
+  _globals:function(path){
+    return PATH._globals+path+'.tpl.html'
+  }
+}
+
 angular.module("unohana", [
   'ui.router',
   'restangular',
@@ -15,7 +29,9 @@ angular.module("unohana", [
   'btford.socket-io',
   'angular-loading-bar',
   'retsu.questions',
-  'retsu.users'
+  'retsu.users',
+  'retsu.admin',
+  'retsu.surveys'
 ]);
 
 

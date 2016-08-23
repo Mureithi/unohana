@@ -1,3 +1,17 @@
+var PATH = {
+  _modules:'app/retsu/',
+  _globals:'app/yon/'
+}
+
+var VIEW ={
+  _modules:function(path){
+    return PATH._modules+path+'.tpl.html'
+  },
+  _globals:function(path){
+    return PATH._globals+path+'.tpl.html'
+  }
+}
+
 angular.module("unohana", [
   'ui.router',
   'restangular',
@@ -15,7 +29,9 @@ angular.module("unohana", [
   'btford.socket-io',
   'angular-loading-bar',
   'retsu.questions',
-  'retsu.users'
+  'retsu.users',
+  'retsu.admin',
+  'retsu.surveys'
 ]);
 
 
@@ -102,12 +118,340 @@ angular.module("unohana").directive('isActiveLink', ['$location', function(
 angular.module('retsu.admin',[]).controller('adminCtrl', ['$scope', 'Requests',
   '$state',
   function(scope, Requests, state) {
-    console.log('Yo')
   }
 ])
 
-angular.module("retsu.admin",[]).config(function($stateProvider, $urlRouterProvider) {
-  // urlRouterProvider.otherwise("/");
+angular.module('retsu.admin').config(function($stateProvider, $urlRouterProvider) {
+
+  $stateProvider.state('admin', {
+    url: '/admin',
+    views: {
+      '': {
+        templateUrl: VIEW._modules('admin/admin.main')
+      },
+      'admin.header@admin':{
+        templateUrl: VIEW._modules('admin/admin.header')
+      },
+      'admin.sidebar@admin':{
+        templateUrl: VIEW._modules('admin/admin.sidebar')
+      }
+    }
+  }).
+  state('admin.dashboard', {
+    url: '/dashboard',
+    views: {
+      '': {
+        controller: 'adminCtrl',
+        templateUrl: VIEW._modules('admin/admin.dashboard')
+      }
+    }
+  })
+});
+
+angular.module('retsu.questions',[]).controller('questionsCtrl', ['$scope', 'Requests',
+  '$state',
+  function(scope, Requests, state) {
+    scope.responses = []
+    scope.question = {};
+    scope.questions = [];
+
+    scope.filterOptions = ['Date', 'Tags'];
+    get();
+    get_options();
+
+    function get() {
+      var payload = {};
+      Requests.get('questions', payload, function(data) {
+        scope.questions = data;
+      });
+    }
+
+    function get_options(){
+      scope.options =[
+        {
+          id:1,
+          name:'Radio'
+        },
+        {
+          id:2,
+          name:'Select'
+        },
+        {
+          id:3,
+          name:'Text Field'
+        },
+        {
+          id:4,
+          name:'Large Text Field'
+        },
+        {
+          id:5,
+          name:'DatePicker'
+        }
+      ]
+    }
+
+    scope.add = function add() {
+      var payload = scope.question;
+      Requests.post('questions', payload, function(data) {
+        if(data.success){
+          state.go('admin.questions.list')
+        }
+      });
+    }
+    scope.edit = function edit() {
+      var payload = scope.question;
+      Requests.put('questions/' + payload.id, payload, function(data) {
+        if(data.success){
+          state.go('admin.questions.list')
+        }
+      });
+    }
+
+    scope.view = function view(question) {
+      console.log(question)
+      scope.currentQuestion = question;
+      state.go('admin.questions.view')
+    }
+  }
+])
+
+
+angular.module('retsu.questions').directive('qTable', function() {
+  return {
+    controller: 'questionsCtrl',
+    // transclude: true,
+
+    templateUrl: VIEW._modules('questions/questions.table'),
+    link: function(scope, element) {
+      // Add Attributes
+
+      element.find('table').addClass(
+        'table table-bordered table-condensed')
+      element.find('input').addClass('form-control')
+    }
+  };
+});
+
+angular.module('retsu.questions').directive('qDash', function() {
+  return {
+    controller: 'questionsCtrl',
+    // transclude: true,
+
+    templateUrl: VIEW._modules('questions/questions.dash'),
+    link: function(scope, element) {
+      // Add Attributes
+
+
+    }
+  };
+});
+
+
+angular.module('retsu.questions').config(function($stateProvider, $urlRouterProvider) {
+
+  $stateProvider.state('admin.questions', {
+    url: '/questions',
+    views: {
+      '': {
+        controller: "questionsCtrl",
+        templateUrl: VIEW._modules('questions/questions.main')
+      }
+    }
+  }).
+  state('admin.questions.dashboard', {
+    url: '/dashboard',
+    views: {
+      '': {
+        template: '<q-dash></q-dash>'
+      },
+      'questions-total-widget@admin.questions.dashboard': {
+        templateUrl: VIEW._modules('questions/questions.widget.total')
+      },
+      'questions-responses-widget@admin.questions.dashboard': {
+        templateUrl: VIEW._modules('questions/questions.widget.responses')
+      },
+      'questions-recent-widget@admin.questions.dashboard': {
+        templateUrl: VIEW._modules('questions/questions.widget.recent')
+      },
+      'questions-actions-widget@admin.questions.dashboard': {
+        templateUrl: VIEW._modules('questions/questions.widget.actions')
+      },
+      'questions-frequency-widget@admin.questions.dashboard': {
+        templateUrl: VIEW._modules('questions/questions.graph.frequency')
+      }
+    }
+  }).
+  state('admin.questions.list', {
+    url: '/list',
+    template: '<q-table st-table="questions"></q-table>'
+  }).
+  state('admin.questions.add', {
+    url: '/add',
+    templateUrl: VIEW._modules('questions/questions.add')
+  }).
+  state('admin.questions.view', {
+    url: '/view',
+    views: {
+      '': {
+        controller: "questionsCtrl",
+        templateUrl: VIEW._modules('questions/questions.view')
+      },
+      'questions-widget-single-responses@admin.questions.view': {
+        templateUrl: VIEW._modules('questions/questions.widget.single.responses')
+      },
+      'questions-widget-single-recent@admin.questions.view': {
+        templateUrl: VIEW._modules('questions/questions.widget.single.recent')
+      },
+      'questions-graph-single-frequency@admin.questions.view': {
+        templateUrl: VIEW._modules('questions/questions.graph.single.frequency')
+      },
+      'questions-graph-single-responses@admin.questions.view': {
+        templateUrl: VIEW._modules('questions/questions.graph.single.responses')
+      },
+      'questions-graphic-distribution@admin.questions.view': {
+        templateUrl: VIEW._modules('questions/questions.graphic.distribution')
+      },
+      'questions-widget-single-actions@admin.questions.view': {
+        templateUrl: VIEW._modules('questions/questions.widget.single.actions')
+      }
+    }
+  })
+});
+
+angular.module('retsu.surveys',[]).controller('surveysCtrl', ['$scope', 'Requests',
+  '$state',
+  function(scope, Requests, state) {
+    scope.responses = []
+    scope.survey = {};
+    scope.surveys = [];
+
+    scope.filterOptions = ['Date', 'Tags'];
+    get();
+    get_options();
+
+    function get() {
+      var payload = {};
+      Requests.get('surveys', payload, function(data) {
+        scope.surveys = data;
+      });
+    }
+
+    function get_options(){
+      scope.options =[
+        {
+          id:1,
+          name:'Radio'
+        },
+        {
+          id:2,
+          name:'Select'
+        },
+        {
+          id:3,
+          name:'Text Field'
+        },
+        {
+          id:4,
+          name:'Large Text Field'
+        },
+        {
+          id:5,
+          name:'DatePicker'
+        }
+      ]
+    }
+
+    scope.add = function add() {
+      var payload = scope.survey;
+      Requests.post('surveys', payload, function(data) {
+        if(data.success){
+          state.go('admin.surveys.list')
+        }
+      });
+    }
+    scope.edit = function edit() {
+      var payload = scope.survey;
+      Requests.put('surveys/' + payload.id, payload, function(data) {
+        if(data.success){
+          state.go('admin.surveys.list')
+        }
+      });
+    }
+
+    scope.view = function view(survey) {
+      console.log(survey)
+      scope.currentQuestion = survey;
+      state.go('admin.surveys.view')
+    }
+  }
+])
+
+
+angular.module('retsu.surveys').directive('sTable', function() {
+  return {
+    controller: 'surveysCtrl',
+    // transclude: true,
+
+    templateUrl: VIEW._modules('surveys/surveys.table'),
+    link: function(scope, element) {
+      // Add Attributes
+
+      element.find('table').addClass(
+        'table table-bordered table-condensed')
+      element.find('input').addClass('form-control')
+    }
+  };
+});
+
+angular.module('retsu.surveys').directive('sDash', function() {
+  return {
+    controller: 'surveysCtrl',
+    // transclude: true,
+
+    templateUrl: VIEW._modules('surveys/surveys.dash'),
+    link: function(scope, element) {
+      // Add Attributes
+
+
+    }
+  };
+});
+
+
+angular.module('retsu.surveys').config(function($stateProvider, $urlRouterProvider) {
+
+  $stateProvider.state('admin.surveys', {
+    url: '/surveys',
+    views: {
+      '': {
+        controller: "surveysCtrl",
+        templateUrl: VIEW._modules('surveys/surveys.main')
+      }
+    }
+  }).
+  state('admin.surveys.dashboard', {
+    url: '/dashboard',
+    views: {
+      '': {
+        template: '<s-dash></s-dash>'
+      },
+      'surveys-total-widget@admin.surveys.dashboard': {
+        templateUrl: VIEW._modules('surveys/surveys.widget.total')
+      },
+      'surveys-actions-widget@admin.surveys.dashboard': {
+        templateUrl: VIEW._modules('surveys/surveys.widget.actions')
+      },
+    }
+  }).
+  state('admin.surveys.list', {
+    url: '/list',
+    template: '<s-table st-table="surveys"></s-table>'
+  }).
+  state('admin.surveys.add', {
+    url: '/add',
+    templateUrl: VIEW._modules('surveys/surveys.add')
+  })
 });
 
 angular.module('retsu.users',[]).controller('usersCtrl', ['$scope', 'Requests',
@@ -127,17 +471,18 @@ angular.module('retsu.users',[]).controller('usersCtrl', ['$scope', 'Requests',
     scope.add = function add() {
       var payload = scope.question;
       Requests.post('questions', payload, function(data) {
-        scope.question = data.success.data;
+        if(data.success){
+          state.go('admin.questions.list')
+        }
       });
     }
 
     scope.login = function login() {
       var payload = scope.user;
       Requests.post('auth', payload, function(data) {
-        console.log(data)
         if(data.success){
           scope.user = data.user;
-          state.go('admin.dashboard')
+          state.go('admin.questions.dashboard')
         }
 
       });
@@ -176,148 +521,6 @@ angular.module('retsu.users').config(function($stateProvider, $urlRouterProvider
         templateUrl: 'app/retsu/users/users.login.tpl.html'
       }
     }
-  })
-});
-
-angular.module('retsu.questions',[]).controller('questionsCtrl', ['$scope', 'Requests',
-  '$state',
-  function(scope, Requests, state) {
-    console.log('Yo');
-    scope.responses = []
-    scope.question = {};
-    scope.questions = [];
-    scope.currentQuestion = {}
-
-    scope.filterOptions = ['Date', 'Tags'];
-    get();
-
-    function get() {
-      var payload = {};
-      Requests.get('questions', payload, function(data) {
-        scope.questions = data.success.data;
-      });
-    }
-
-    scope.add = function add() {
-      var payload = scope.question;
-      Requests.post('questions', payload, function(data) {
-        scope.question = data.success.data;
-      });
-    }
-    scope.edit = function edit() {
-      var payload = scope.question;
-      Requests.put('questions/' + payload.id, payload, function(data) {
-        scope.question = data.success.data;
-      });
-    }
-
-    scope.view = function view(question) {
-      scope.currentQuestion = question;
-      state.go('admin.questions.view')
-    }
-  }
-])
-
-
-angular.module('retsu.questions',[]).directive('qTable', function() {
-  return {
-    controller: 'questionsCtrl',
-    // transclude: true,
-
-    templateUrl: 'app/questions/questions.table.tpl.html',
-    link: function(scope, element) {
-      // Add Attributes
-
-      element.find('table').addClass(
-        'table table-bordered table-condensed')
-      element.find('input').addClass('form-control')
-    }
-  };
-});
-
-angular.module('retsu.questions').directive('qDash', function() {
-  return {
-    controller: 'questionsCtrl',
-    // transclude: true,
-
-    templateUrl: 'app/questions/questions.dash.tpl.html',
-    link: function(scope, element) {
-      // Add Attributes
-
-
-    }
-  };
-});
-
-
-angular.module('retsu.questions',[]).config(function($stateProvider, $urlRouterProvider) {
-
-  $stateProvider.state('questions', {
-    url: '/questions',
-    views: {
-      '': {
-        controller: "questionsCtrl",
-        templateUrl: 'app/retsu/questions/questions.main.tpl.html'
-      }
-    }
-  }).
-  state('questions.dashboard', {
-    url: '/dashboard',
-    views: {
-      '': {
-        template: '<q-dash></q-dash>'
-      },
-      'questions-total-widget@questions.dashboard': {
-        templateUrl: 'app/retsu/questions/questions.widget.total.tpl.html'
-      },
-      'questions-responses-widget@questions.dashboard': {
-        templateUrl: 'app/retsu/questions/questions.widget.responses.tpl.html'
-      },
-      'questions-recent-widget@questions.dashboard': {
-        templateUrl: 'app/retsu/questions/questions.widget.recent.tpl.html'
-      },
-      'questions-actions-widget@questions.dashboard': {
-        templateUrl: 'app/retsu/questions/questions.widget.actions.tpl.html'
-      },
-      'questions-frequency-widget@questions.dashboard': {
-        templateUrl: 'app/retsu/questions/questions.graph.frequency.tpl.html'
-      }
-    }
-  }).
-  state('questions.list', {
-    url: '/list',
-    template: '<q-table st-table="questions"></q-table>'
-  }).
-  state('questions.add', {
-    url: '/add',
-    templateUrl: 'app/retsu/questions/questions.add.tpl.html'
-  }).
-  state('questions.view', {
-    url: '/view',
-    views: {
-      '': {
-        templateUrl: 'app/retsu/questions/questions.view.tpl.html'
-      },
-      'questions-widget-single-responses@questions.view': {
-        templateUrl: 'app/retsu/questions/questions.widget.single.responses.tpl.html'
-      },
-      'questions-widget-single-recent@questions.view': {
-        templateUrl: 'app/retsu/questions/questions.widget.single.recent.tpl.html'
-      },
-      'questions-graph-single-frequency@questions.view': {
-        templateUrl: 'app/retsu/questions/questions.graph.single.frequency.tpl.html'
-      },
-      'questions-graph-single-responses@questions.view': {
-        templateUrl: 'app/retsu/questions/questions.graph.single.responses.tpl.html'
-      },
-      'questions-graphic-distribution@questions.view': {
-        templateUrl: 'app/retsu/questions/questions.graphic.distribution.tpl.html'
-      },
-      'questions-widget-single-actions@questions.view': {
-        templateUrl: 'app/retsu/questions/questions.widget.single.actions.tpl.html'
-      }
-    }
-
   })
 });
 
@@ -363,10 +566,9 @@ angular.module("unohana").factory('errorInterceptor', ['$q', '$log',
             "type": "success",
             "code": response.status,
             "msg": response.statusText,
-            "message": response.data.success.message
+            "message": response.data.message
           };
           rootScope.success = success;
-          console.log(rootScope.success);
           rootScope.showSuccess = true;
           timeout(function() {
             rootScope.showSuccess = false;
@@ -379,13 +581,13 @@ angular.module("unohana").factory('errorInterceptor', ['$q', '$log',
       // optional method
       'responseError': function(response) {
         console.log(response);
-        if (response.data) {
+        if (!response.data.success) {
           var error = {
             "icon": "ion-android-alert",
             "type": "danger",
             "code": response.status,
             "msg": response.statusText,
-            "message": response.data.error.message
+            "message": response.data.message
           };
           rootScope.error = error;
           rootScope.showError = true;
