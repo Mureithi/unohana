@@ -154,6 +154,7 @@ angular.module('retsu.questions',[]).controller('questionsCtrl', ['$scope', 'Req
     scope.responses = []
     scope.question = {};
     scope.questions = [];
+    scope.currentQuestion = {"xwcwcwc":"cwcw"};
 
     scope.filterOptions = ['Date', 'Tags'];
     get();
@@ -219,7 +220,6 @@ angular.module('retsu.questions',[]).controller('questionsCtrl', ['$scope', 'Req
 
 angular.module('retsu.questions').directive('qTable', function() {
   return {
-    controller: 'questionsCtrl',
     // transclude: true,
 
     templateUrl: VIEW._modules('questions/questions.table'),
@@ -235,7 +235,6 @@ angular.module('retsu.questions').directive('qTable', function() {
 
 angular.module('retsu.questions').directive('qDash', function() {
   return {
-    controller: 'questionsCtrl',
     // transclude: true,
 
     templateUrl: VIEW._modules('questions/questions.dash'),
@@ -288,13 +287,20 @@ angular.module('retsu.questions').config(function($stateProvider, $urlRouterProv
   }).
   state('admin.questions.add', {
     url: '/add',
-    templateUrl: VIEW._modules('questions/questions.add')
+    views:{
+      '':{
+        templateUrl: VIEW._modules('questions/questions.add')
+      },
+      'questions-total-widget@admin.questions.add': {
+        templateUrl: VIEW._modules('questions/questions.widget.total')
+      },
+    }
+
   }).
   state('admin.questions.view', {
     url: '/view',
     views: {
       '': {
-        controller: "questionsCtrl",
         templateUrl: VIEW._modules('questions/questions.view')
       },
       'questions-widget-single-responses@admin.questions.view': {

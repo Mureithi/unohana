@@ -38,13 +38,20 @@ angular.module('retsu.questions').config(function($stateProvider, $urlRouterProv
   }).
   state('admin.questions.add', {
     url: '/add',
-    templateUrl: VIEW._modules('questions/questions.add')
+    views:{
+      '':{
+        templateUrl: VIEW._modules('questions/questions.add')
+      },
+      'questions-total-widget@admin.questions.add': {
+        templateUrl: VIEW._modules('questions/questions.widget.total')
+      },
+    }
+
   }).
   state('admin.questions.view', {
     url: '/view',
     views: {
       '': {
-        controller: "questionsCtrl",
         templateUrl: VIEW._modules('questions/questions.view')
       },
       'questions-widget-single-responses@admin.questions.view': {

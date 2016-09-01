@@ -24,6 +24,9 @@ border:1px solid $silver;
   }
 }
 form{
+  &.card{
+    @extend .card-sm;
+  }
   .title,.header{
     padding:0 !important;
     color:$madison !important;

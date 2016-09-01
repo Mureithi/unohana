@@ -5497,7 +5497,7 @@ a {
   color: #EF4836; }
 
 /* Cards */
-.card-sm {
+.card-sm, form.card {
   padding: 5%;
   background: white;
   width: 100% !important;
@@ -5505,25 +5505,25 @@ a {
   border: 1px solid #BFBFBF;
   margin-bottom: 2em;
   position: relative; }
-  .card-sm .header {
+  .card-sm .header, form.card .header {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%; }
-    .card-sm .header .card-meta {
+    .card-sm .header .card-meta, form.card .header .card-meta {
       color: #555555; }
-    .card-sm .header i {
+    .card-sm .header i, form.card .header i {
       padding-right: 10px; }
-  .card-sm .title {
+  .card-sm .title, form.card .title {
     border-bottom: 1px solid #ddd; }
-  .card-sm .content {
+  .card-sm .content, form.card .content {
     padding-top: 0;
     padding: 0.5em;
     border-top: none; }
-  .card-sm .value {
+  .card-sm .value, form.card .value {
     color: #333;
     text-align: center; }
-  .card-sm button {
+  .card-sm button, form.card button {
     width: 60%;
     margin: auto;
     text-align: center;
@@ -5831,7 +5831,7 @@ License URL ... https://github.com/typeplate/starter-kit/blob/master/license.txt
   src: local("Georgia");
   unicode-range: U+270C; }
 
-.typl8-tera, .typl8-giga, .typl8-mega, h1, .typl8-alpha, h2, .typl8-beta, .card-sm .value, .card-md .value, .card-lg .value, h3, .typl8-gamma, h4, .message.view .inner .title .subject, .typl8-delta, h5, .message.item .inner .title .subject, .typl8-epsilon, .message.item .inner .content, .message.view .inner .content, .typl8-zeta, h6, body {
+.typl8-tera, .typl8-giga, .typl8-mega, h1, .typl8-alpha, h2, .typl8-beta, .card-sm .value, form.card .value, .card-md .value, .card-lg .value, h3, .typl8-gamma, h4, .message.view .inner .title .subject, .typl8-delta, h5, .message.item .inner .title .subject, .typl8-epsilon, .message.item .inner .content, .message.view .inner .content, .typl8-zeta, h6, body {
   text-rendering: optimizeLegibility;
   line-height: 1;
   margin-top: 0;
@@ -5882,7 +5882,7 @@ body {
   margin-bottom: 8.91px;
   margin-bottom: 0.495rem; }
 
-.typl8-beta, .card-sm .value, .card-md .value, .card-lg .value, h3 {
+.typl8-beta, .card-sm .value, form.card .value, .card-md .value, .card-lg .value, h3 {
   font-size: 42px;
   font-size: 2.33333 rem;
   margin-bottom: 12.72857px;
@@ -6154,6 +6154,14 @@ p + p {
 
 h1 i, h2 i, h3 i, h4 i, h5 i, h6 i {
   padding-right: 5px; }
+
+.time {
+  font-size: 0.7em;
+  float: right;
+  color: #ddd;
+  cursor: pointer; }
+  .time:hover {
+    color: black; }
 
 form.bordered {
   border: 1px solid #BFBFBF; }

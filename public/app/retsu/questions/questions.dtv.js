@@ -1,6 +1,5 @@
 angular.module('retsu.questions').directive('qTable', function() {
   return {
-    controller: 'questionsCtrl',
     // transclude: true,
 
     templateUrl: VIEW._modules('questions/questions.table'),
@@ -16,7 +15,6 @@ angular.module('retsu.questions').directive('qTable', function() {
 
 angular.module('retsu.questions').directive('qDash', function() {
   return {
-    controller: 'questionsCtrl',
     // transclude: true,
 
     templateUrl: VIEW._modules('questions/questions.dash'),

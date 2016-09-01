@@ -4,6 +4,7 @@ angular.module('retsu.questions',[]).controller('questionsCtrl', ['$scope', 'Req
     scope.responses = []
     scope.question = {};
     scope.questions = [];
+    scope.currentQuestion = {"xwcwcwc":"cwcw"};
 
     scope.filterOptions = ['Date', 'Tags'];
     get();
