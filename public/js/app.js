@@ -196,6 +196,7 @@ angular.module('retsu.questions',[]).controller('questionsCtrl', ['$scope', 'Req
       var payload = scope.question;
       Requests.post('questions', payload, function(data) {
         if(data.success){
+          get();
           state.go('admin.questions.list')
         }
       });
