@@ -5,10 +5,13 @@ var bowerNormalizer = require('gulp-bower-normalize');
 var clean = require('gulp-clean');
 var concat = require('gulp-concat');
 var order = require('gulp-order');
+var sass = require('gulp-sass');
+var refresh = require('gulp-refresh')
 
 var paths = {
   scripts: 'public/app/**/*.js',
-  sass: 'resources/sass/styles.scss'
+  sass: 'public/assets/sass/**/*.scss',
+  html: 'public/app/**/*.html'
 };
 
 
@@ -28,26 +31,19 @@ var paths = {
 /*
  * Compile Assets
  */
-gulp.task('compile', function() {
+ gulp.task('scripts', function() {
+   return gulp.src('./public/app/**/*.js')
+     .pipe(concat('app.js'))
+     .pipe(gulp.dest('./public/js/'))
+     .pipe(refresh());
+ });
 
-
-
-  elixir(function(mix) {
-    // Process SASS files
-    mix.sass('styles.scss', 'public/css/app.css')
-      .stylesIn('public/libs/css', 'public/css/libs.css')
-      // Concatenate Angular JS files
-      .scriptsIn('public/app', 'public/js/app.js')
-      //Versioning Files
-      .scriptsIn('public/libs/js', 'public/js/libs.js')
-      .version(['public/js/app.js', 'public/css/app.css',
-        'public/js/libs.js', 'public/css/libs.css'
-      ]);
-
-
-
-  });
-});
+ gulp.task('sass', function () {
+   return gulp.src('./public/assets/sass/styles.scss')
+     .pipe(sass().on('error', sass.logError))
+     .pipe(gulp.dest('./public/css'))
+     .pipe(refresh());
+ });
 
 gulp.task('process-libs', function() {
   elixir(function(mix) {
@@ -68,7 +64,7 @@ gulp.task('bower', function() {
 
 gulp.task('move_fonts', function() {
   gulp.src('public/libs/fonts/**/*')
-    .pipe(gulp.dest('public/build/fonts'));
+    .pipe(gulp.dest('public/fonts'));
 });
 
 gulp.task('clean', function() {
@@ -80,11 +76,12 @@ gulp.task('clean', function() {
 
 // Watch for changes
 gulp.task('watch', function() {
-  gulp.watch(paths.scripts, ['compile']);
-  gulp.watch(paths.sass, ['compile']);
+  refresh.listen();
+  gulp.watch(paths.scripts, ['scripts']);
+  gulp.watch(paths.sass, ['sass']);
+  gulp.watch(paths.html, ['scripts']);
 });
 
 // Default Task
-gulp.task('default', ['clean', 'bower',
-  'compile', 'move_fonts'
+gulp.task('default', ['bower', 'move_fonts','scripts','sass'
 ]);

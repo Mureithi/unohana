@@ -15,8 +15,10 @@
     "debug": "~2.2.0",
     "express": "~4.13.1",
     "gulp": "^3.9.1",
+    "gulp-refresh": "^1.1.0",
     "jade": "~1.11.0",
     "jsonwebtoken": "^7.1.7",
+    "laravel-elixir": "^6.0.0-10",
     "morgan": "~1.6.1",
     "mysql": "^2.10.0",
     "sequelize": "^3.3.2",
@@ -27,6 +29,8 @@
   "devDependencies": {
     "bluebird": "^2.9.33",
     "expect.js": "^0.3.1",
+    "gulp-image": "^2.5.0",
+    "gulp-sass": "^2.3.2",
     "mocha": "^2.2.5",
     "supertest": "^1.0.1"
   }

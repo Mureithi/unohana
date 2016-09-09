@@ -1,0 +1,20 @@
+<div class="padded row full-content bg-blue" style="padding:10%">
+  <div class="col-xs-6 col-xs-offset-3 login">
+    <h4 class="text-center">Sign In to UNOHANA</h4>
+    <form class="" action="index.html" method="post">
+      <label for="">Username</label>
+      <input type="text" name="username" ng-model="user.username" value="">
+      <label for="">Password</label>
+      <input type="password" name="name" ng-model="user.password" value="">
+      <button class="btn btn-primary" type="button" name="button" ng-click="login()">Sign In</button>
+    </form>
+    <div ng-show="showError" class="animated fadeIn alert alert-{{error.type}}">
+       <span class="{{error.icon}}"></span>
+       <span ng-bind="error.message"></span>
+   </div>
+   <div ng-show="showSuccess" class="animated fadeIn alert alert-{{success.type}}">
+       <span class="{{success.icon}}"></span>
+       <span ng-bind="success.message"></span>
+   </div>
+  </div>
+</div>

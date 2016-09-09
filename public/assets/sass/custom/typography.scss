@@ -18,12 +18,13 @@ body{
   @extend .typl8-zeta;
 }
 .title{
-  background:white;
+  color:$sage;
+  text-shadow:0 0.25px $ash-grey;
 }
 .title,.header{
-
+  border-bottom:1px solid #333;
+  line-height:37px;
   text-align:center;
-  color:$dark-gray;
   padding:10px 15px;
   margin-bottom:0 !important;
 }
@@ -70,4 +71,20 @@ p{
 }
 p+p{
  text-indent:0;
+}
+
+h1,h2,h3,h4,h5,h6{
+  i{
+    padding-right:5px;
+  }
+}
+
+.time{
+  font-size:0.7em;
+  float:right;
+  color:$light-gray;
+  cursor: pointer;
+  &:hover{
+    color:black;
+  }
 }

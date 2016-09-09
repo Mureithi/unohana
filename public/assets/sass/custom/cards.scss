@@ -20,6 +20,9 @@
       padding-right:10px;
     }
   }
+  .title{
+    border-bottom:1px solid #ddd;
+  }
   .content{
     padding-top:0;
     padding:0.5em;
@@ -64,12 +67,27 @@ a:hover{
   }
 }
 
-.dashboard.buttons{
-  .btn{
-    width:45%;
-    margin-bottom:10px;
-}
-.btn:nth-child(even){
-  float:right;
-}
+.dashboard{
+  height:120px;
+  &.buttons{
+    .btn{
+      width:50%;
+      height:50%;
+      margin-bottom:0px;
+      i{
+        float:right;
+        font-size:2em;
+      }
+      div{
+        margin-top:10px;
+        display: inline-block;
+      }
+    }
+    .btn:nth-child(even){
+      float:right;
+      i{
+        float:left;
+      }
+    }
+  }
 }

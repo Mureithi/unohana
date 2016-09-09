@@ -15,7 +15,7 @@
 a{
   color:$dark-gray;
   i{
-    padding-right:0 5px;
+    padding-right:5px;
   }
 }
 .btn-dark{
@@ -23,19 +23,23 @@ a{
   color:$dark-gray;
 }
 .btn-primary{
-  background:$madison;
+  background:$cyan-cornflower-blue;
 }
 .btn-info{
-  background:$picton-blue;
-  border:$picton-blue;
+  background:$ash-grey;
+  border:$ash-grey;
 }
 .btn-success{
-  background:$ocean-green;
-  border:$ocean-green;
+  background:$sage;
+  border:$sage;
 }
 .btn-danger{
-  background:$flamingo;
+  background:$sunset-orange;
   color:white !important;
+}
+.btn-warning{
+  background:$mellow-apricot;
+  border-color:$mellow-apricot;
 }
 .btn-default{
   background:$carrara;
