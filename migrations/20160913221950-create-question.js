@@ -8,11 +8,17 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      value: {
+      description: {
         type: Sequelize.STRING
+      },
+      option_id: {
+        type: Sequelize.INTEGER
       },
       survey_id: {
         type: Sequelize.INTEGER
+      },
+      tags: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

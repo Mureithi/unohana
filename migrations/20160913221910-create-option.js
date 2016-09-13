@@ -8,14 +8,8 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      q_id: {
-        type: Sequelize.INTEGER
-      },
-      value: {
+      type: {
         type: Sequelize.STRING
-      },
-      qc_id: {
-        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
