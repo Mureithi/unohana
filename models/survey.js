@@ -1,5 +1,6 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
+    // Define the Survey Model
   var Survey = sequelize.define('Survey', {
     description: DataTypes.STRING
   }, {
