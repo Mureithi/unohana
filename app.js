@@ -12,6 +12,7 @@ var users = require('./controllers/users');
 var authenticate = require('./controllers/auth');
 var survey = require('./controllers/survey');
 var question = require('./controllers/question');
+var county = require('./controllers/county');
 var app = express();
 // view engine setup
 
@@ -44,6 +45,8 @@ app.use('/api/users', users);
 app.use('/api/auth', authenticate);
 app.use('/api/questions', question);
 app.use('/api/surveys', survey);
+app.use('/api/county', county);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
