@@ -1,11 +1,11 @@
 {
   "development": {
     "username": "root",
-    "password": "root",
+    "password": "ichigoojenge",
     "database": "unohana",
     "host": "localhost",
     "dialect": "mysql",
-    "secret": "secret"
+    "secret": "ichigoojenge"
   },
   "test": {
     "username": "root",
