@@ -1,6 +1,7 @@
 "use strict";
 
 module.exports = function(sequelize, DataTypes) {
+    // Define the User Model
   var User = sequelize.define("User", {
     name: {
       type: DataTypes.VIRTUAL,
@@ -31,7 +32,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        User.hasMany(models.Task)
+        //User.hasMany(models.Task)
       }
     }
   });

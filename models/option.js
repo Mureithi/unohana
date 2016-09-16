@@ -1,7 +1,11 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
-  var Option = sequelize.define('Option', {
-    type: DataTypes.STRING
+  // Define the Options Model
+  var Options = sequelize.define('Options', {
+    // Set the Attributes
+    q_id: DataTypes.INTEGER,
+    value: DataTypes.STRING,
+    qc_id: DataTypes.INTEGER
   }, {
     classMethods: {
       associate: function(models) {
@@ -9,5 +13,5 @@ module.exports = function(sequelize, DataTypes) {
       }
     }
   });
-  return Option;
+  return Options;
 };

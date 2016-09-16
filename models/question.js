@@ -1,5 +1,6 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
+    // Define the Question Model
   var Question = sequelize.define('Question', {
     description: DataTypes.STRING,
     option_id: DataTypes.INTEGER,
