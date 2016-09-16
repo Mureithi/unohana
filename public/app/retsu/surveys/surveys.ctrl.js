@@ -2,7 +2,9 @@ angular.module('retsu.surveys',[]).controller('surveysCtrl', ['$scope', 'Request
   '$state',
   function(scope, Requests, state) {
     scope.responses = []
-    scope.survey = {};
+    scope.survey = {
+      "county":"none"
+    };
     scope.surveys = [];
 
     scope.filterOptions = ['Date', 'Tags'];

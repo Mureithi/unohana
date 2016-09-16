@@ -5,6 +5,7 @@ var router = express.Router();
 
 router.get('/', function(req, res) {
   models.Question.findAll().then(function(question) {
+    question = question.map(transform_question)
     res.send(JSON.stringify(question));
   });
 })
@@ -44,4 +45,13 @@ router.put('/:id', function(req, res) {
   });
 })
 
+function transform_question(question){
+  return {
+    id : question.id,
+    survey :null,
+    value : question.value,
+    createdAt : question.createdAt,
+    updatedAt : question.updatedAt
+  }
+}
 module.exports = router;
