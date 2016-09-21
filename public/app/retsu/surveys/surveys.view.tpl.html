@@ -1,30 +1,57 @@
-<div class="row">
-  <div class="col-md-6">
-    <div class="inner card-sm">
-      <form ng-submit="edit()" method="post">
-        <h5>Details</h5>
-        <div class="form-group">
-          <label for="">Value</label>
-          <input class="form-control" type="text" ng-model="currentQuestion.value">
+<div class="padded inner">
+  <form ng-submit="view(survey)" method="post">
+    <h3 ng-bind="survey.description"></h3>
+    <div class="survey">
+      <div ng-repeat="section in survey.sections">
+        <div class="section" >
+          <h4 ng-bind="section.description" ></h4>
+          <table class="table table-striped">
+            <tr class="question" ng-repeat="question in section.questions"
+              ng-if="section.questions.length>0">
+              <td>
+                <div class="form-group">
+                  # {{$index+1}}. <label for="description" ng-bind="question.description"></label>
+                </div>
+              </td>
+              <td style="width:30%">
+                <div>
+                  <span ng-if="question.option_type=='Radio'" ng-repeat="option in question.options">{{ option }}
+                    <input value="option"  type="radio"
+                    name="options_{{question.description}}" value="">
+                  </span>
+
+                  <span ng-if="question.option_type=='Checkbox'" ng-repeat="option in question.options">{{ option }}
+                    <input value="option"  type="checkbox" name="options_{{question.description}}" value="">
+                  </span>
+
+                  <select ng-if="question.option_type=='Select One'" class="" name=""
+                  ng-options="option as option for option in question.options"></select>
+
+                  <select ng-if="question.option_type=='Select Many'" multiple class="" name=""
+                  ng-options="option as option for option in question.options"></select>
+
+                  <input ng-if="question.option_type=='Text Field'" type="text" name="options" value="">
+
+                  <textarea ng-if="question.option_type=='Large Text Field'" name="name" rows="4" cols="40"></textarea>
+
+                  <input ng-if="question.option_type=='DatePicker'" type="date" name="name" value="">
+                </div>
+              </td>
+            </tr>
+
+            <tr ng-if="section.questions.length==0">
+              <td>
+                <p class="alert alert-info">
+                  The section has no questions.
+              </td>
+            </tr>
+          </table>
         </div>
-        <div class="form-group">
-          <label for="">Tags</label>
-          <input class="form-control" type="text" ng-model="currentQuestion.tags">
-        </div>
-        <button type="submit" class="btn btn-success">Save</button>
-      </form>
+      </div>
     </div>
-  </div>
-  <div class="col-md-3">
-    <a ui-view="questions-widget-single-responses">
-
-    </a>
-  </div>
-
-  <div class="col-md-3">
-    <a ui-view="questions-widget-single-recent">
-
-    </a>
-  </div>
+    <div class="footer">
+      <button class="btn btn-warning" type="submit"><i class="ion-flash"></i>Rebuild Survey</button>
+      <a class="btn btn-primary" ui-sref="admin.surveys.start"><i class="ion-flag"></i>Start Survey</a>
+    </div>
+  </form>
 </div>
-{{ currentQuestion }}

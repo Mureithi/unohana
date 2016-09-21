@@ -4,13 +4,10 @@ html,body{
   overflow-y:hidden;
   > div{
     height:100%;
-    overflow-y:hidden;
     > div{
       height:100%;
-      overflow-y:hidden;
       > div.row{
         height:100%;
-        overflow-y:hidden;
       }
     }
   }
@@ -243,4 +240,25 @@ p.null-message{
 
 .full-content{
   height:100%;
+}
+.survey{
+  height:400px;
+  overflow-y:auto;
+  -webkit-box-shadow: inset 0px 0px 2px 0px rgba(0,0,0,0.75);
+-moz-box-shadow: inset 0px 0px 2px 0px rgba(0,0,0,0.75);
+box-shadow: inset 0px 0px 2px 0px rgba(0,0,0,0.75);
+}
+
+.section{
+  padding:5% 2%;
+  border-bottom:1px solid $silver;
+
+}
+.dndPlaceholder{
+  display: block;
+  background-color: $mellow-apricot;
+  min-height: 5px;
+}
+.no-padding{
+  padding:0;
 }

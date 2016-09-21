@@ -4,15 +4,8 @@
       <form ng-submit="add()" method="post">
         <h5 class="title">Details</h5>
         <div class="form-group">
-          <label for="">Name</label>
-          <input class="form-control" type="text" ng-model="survey.name">
-        </div>
-        <div class="form-group">
-          <label for="">County</label>
-          <select ng-model="survey.county" class="" name="">
-            <option value="none">Please Choose a County</option>
-            <option value="Nairobi">Nairobi</option>
-          </select>
+          <label for="">Description</label>
+          <input class="form-control" type="text" ng-model="survey.description">
         </div>
         <div class="form-group">
         <button type="submit" class="btn btn-success">Save</button>

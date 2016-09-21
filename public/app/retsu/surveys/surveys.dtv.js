@@ -1,6 +1,5 @@
 angular.module('retsu.surveys').directive('sTable', function() {
   return {
-    controller: 'surveysCtrl',
     // transclude: true,
 
     templateUrl: VIEW._modules('surveys/surveys.table'),
@@ -16,7 +15,6 @@ angular.module('retsu.surveys').directive('sTable', function() {
 
 angular.module('retsu.surveys').directive('sDash', function() {
   return {
-    controller: 'surveysCtrl',
     // transclude: true,
 
     templateUrl: VIEW._modules('surveys/surveys.dash'),

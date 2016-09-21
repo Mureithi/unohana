@@ -43,6 +43,11 @@ form{
     border-radius: 0 !important;
     margin-bottom:1em !important;
   }
+  input[type='radio'],input[type='checkbox']{
+    width:auto !important;
+    height:auto !important;
+    display:inline-block !important;
+  }
   textarea{
     min-height:150px;
   }

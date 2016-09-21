@@ -30,5 +30,17 @@ angular.module('retsu.surveys').config(function($stateProvider, $urlRouterProvid
   state('admin.surveys.add', {
     url: '/add',
     templateUrl: VIEW._modules('surveys/surveys.add')
+  }).
+  state('admin.surveys.build', {
+    url: '/build',
+    templateUrl: VIEW._modules('surveys/surveys.build')
+  }).
+  state('admin.surveys.view', {
+    url: '/view',
+    templateUrl: VIEW._modules('surveys/surveys.view')
+  }).
+  state('admin.surveys.start', {
+    url: '/start',
+    templateUrl: VIEW._modules('surveys/surveys.start')
   })
 });

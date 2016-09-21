@@ -18,7 +18,13 @@ router.get('/:id', function(req, res) {
 router.post('/', function(req, res) {
   console.log(req.body);
   models.Survey.create(req.body).then(function(survey) {
-    res.send(JSON.stringify(survey.description + ' Created'));
+    res.send(
+      {
+        success:true,
+        message:survey.description + ' Created',
+        survey:survey
+      }
+    );
   });
 })
 router.put('/:id', function(req, res) {

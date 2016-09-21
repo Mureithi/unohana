@@ -1,0 +1,81 @@
+<div class="padded inner">
+  <form method="post">
+    <h3>
+      <label for="">Survey Name</label>
+      <input type="text" ng-model="survey.description" name="name" value="">
+    </h3>
+    <a class="btn btn-primary" ng-click="build()"><i class="ion-flash"></i>Build Survey</a>
+    <a ng-if="sections.length>0" class="btn btn-success" ng-click="addSection(sections)"><i class="ion-ios-list"></i>Add Section</a>
+    <div class="survey">
+      <div ng-repeat="section in sections"
+      dnd-list="sections"
+      dnd-draggable="section"
+      dnd-moved="sections.splice($index, 1)"
+      dnd-effect-allowed="move"
+      dnd-selected="sections.selected = section"
+      ng-class="{'selected': sections.selected === item}"
+      ng-if="sections.length>0"
+      >
+        <div class="section" >
+          <h4>
+            <label for="">Section Name</label>
+            <input type="text" ng-model="section.description" name="name" value="">
+            <a class="btn btn-danger" ng-click="sections.splice($index, 1)"><i class="ion-close-circled"></i>Remove Section</a>
+          </h4>
+          <a ng-if="section.questions.length>0" class="btn btn-success" ng-click="addQuestion(section)"><i class="ion-plus-round"></i>Add Question</a>
+          <table class="table table-striped">
+            <tr class="question" ng-repeat="question in section.questions"
+              dnd-list="section.questions"
+              dnd-draggable="question"
+              dnd-moved="section.questions.splice($index, 1)"
+              dnd-effect-allowed="move"
+              dnd-selected="section.questions.selected = question"
+              ng-class="{'selected': section.questions.selected === question}"
+              ng-if="section.questions.length>0">
+              <td>
+                # {{$index+1}}.
+              </td>
+              <td>
+                <div class="form-group">
+                  <label for="description">Description</label>
+                  <input type="text" name="description" value="" ng-model="question.description">
+                </div>
+              </td>
+              <td>
+                <div class="form-group">
+                  <label for="description">Option Type</label>
+                  <select type="text" name="option_type" value=""
+                  ng-options="option.name as option.name for option in options"
+                  ng-model="question.option_type">
+                </div>
+              </td>
+              <td>
+                <div class="form-group">
+                  <label for="description">Options (comma seperated)</label>
+                  <input type="text" name="options" value="" ng-list ng-model="question.options">
+                </div>
+              </td>
+              <td>
+                <a class="btn btn-danger" ng-click="section.questions.splice($index, 1)">Remove Question</a>
+              </td>
+            </tr>
+            <tr ng-if="section.questions.length==0">
+              <td>
+                <p class="alert alert-info">
+                  The section has no questions.
+                  <a class="btn btn-success" ng-click="addQuestion(section)"><i class="ion-plus-round"></i>Add Question</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="" ng-if="sections.length==0">
+        <p class="alert alert-info">
+          The survey has no sections. <a class="btn btn-success" ng-click="addSection(sections)"><i class="ion-ios-list"></i>Add Section</a>
+        </p>
+      </div>
+    </div>
+    <a class="btn btn-primary" ng-click="build()"><i class="ion-flash"></i>Build Survey</a>
+    <a ng-if="sections.length>0" class="btn btn-success"  ng-click="addSection(sections)"><i class="ion-ios-list"></i>Add Section</a>
+  </form>
+</div>
