@@ -12,12 +12,15 @@ module.exports = {
         },
         first_name: Sequelize.STRING,
         last_name: Sequelize.STRING,
-        username: Sequelize.STRING,
+        username: {
+          type: Sequelize.STRING,
+          unique: true
+        },
         password: Sequelize.STRING,
-        createdAt: {
+        created_at: {
           type: Sequelize.DATE
         },
-        updatedAt: {
+        updated_at: {
           type: Sequelize.DATE
         },
       });

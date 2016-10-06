@@ -8,17 +8,38 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      question_id: {
+      mandatory: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: true
+      },
+      order: {
         type: Sequelize.INTEGER
+      },
+      question_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Questions",
+          key: "id",
+          onUpdate: "CASCADE",
+          onDelete: "RESTRICT"
+        },
+          allowNull: false
       },
       option_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Options",
+          key: "id",
+          onUpdate: "CASCADE",
+          onDelete: "RESTRICT"
+        },
+          allowNull: false
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE
       }
