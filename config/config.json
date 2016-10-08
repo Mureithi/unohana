@@ -1,9 +1,9 @@
 {
   "development": {
     "username": "root",
-    "password": "ichigoojenge",
+    "password": "root",
     "database": "unohana",
-    "host": "localhost",
+    "host": "mysql",
     "dialect": "mysql",
     "secret": "ichigoojenge"
   },

@@ -28,6 +28,7 @@ angular.module("unohana", [
   'angularValidator',
   'btford.socket-io',
   'angular-loading-bar',
+  'dndLists',
   'retsu.questions',
   'retsu.users',
   'retsu.admin',
