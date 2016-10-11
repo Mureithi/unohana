@@ -6399,6 +6399,8 @@ html, body {
       height: 100%; }
       html > div > div > div.row, .content.main html > div > div > div.form-group, form html > div > div > div.form-group, body > div > div > div.row, .content.main body > div > div > div.form-group, form body > div > div > div.form-group {
         height: 100%; }
+  html #main_content, body #main_content {
+    height: 100%; }
 
 div#main {
   background: whitesmoke; }
@@ -6581,8 +6583,6 @@ p.null-message {
   height: 100%; }
 
 .survey {
-  height: 400px;
-  overflow-y: auto;
   -webkit-box-shadow: inset 0px 0px 2px 0px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: inset 0px 0px 2px 0px rgba(0, 0, 0, 0.75);
   box-shadow: inset 0px 0px 2px 0px rgba(0, 0, 0, 0.75); }

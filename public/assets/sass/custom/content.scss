@@ -11,6 +11,9 @@ html,body{
       }
     }
   }
+  #main_content{
+    height:100%;
+  }
 }
 div#main{
   background: whitesmoke;
@@ -242,8 +245,6 @@ p.null-message{
   height:100%;
 }
 .survey{
-  height:400px;
-  overflow-y:auto;
   -webkit-box-shadow: inset 0px 0px 2px 0px rgba(0,0,0,0.75);
 -moz-box-shadow: inset 0px 0px 2px 0px rgba(0,0,0,0.75);
 box-shadow: inset 0px 0px 2px 0px rgba(0,0,0,0.75);

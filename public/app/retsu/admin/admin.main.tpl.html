@@ -1,9 +1,9 @@
 <div style="height:100%">
   <div class="row">
     <div class="col-xs-2 sidebar" ui-view="admin.sidebar"></div>
-    <div class="col-xs-10" style="padding:0">
+    <div id="main_content" class="col-xs-10" style="padding:0">
       <div ui-view="admin.header"></div>
-      <div ui-view=""></div>
+      <div ui-view="" style="height: 100%;overflow-y: hidden;"></div>
     </div>
   </div>
 </div>
