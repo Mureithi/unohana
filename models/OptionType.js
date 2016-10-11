@@ -1,15 +1,15 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
-  // Define a County Model
-  var County = sequelize.define('County', {
-    // Set the Attributes
+  var OptionType = sequelize.define('OptionType', {
     name: DataTypes.STRING
   }, {
     classMethods: {
       associate: function(models) {
         // associations can be defined here
-      }
+        OptionType.hasMany(models.Option);
+      },
+      underscored: true
     }
   });
-  return County;
+  return OptionType;
 };

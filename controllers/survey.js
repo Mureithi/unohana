@@ -4,7 +4,9 @@ var router = express.Router();
 
 
 router.get('/', function(req, res) {
-  models.Survey.findAll().then(function(survey) {
+  models.Survey.findAll({
+    include: [models.User,models.County]
+  }).then(function(survey) {
     res.send(JSON.stringify(survey));
   });
 })

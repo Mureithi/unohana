@@ -12,13 +12,30 @@ module.exports = {
         type: Sequelize.STRING
       },
       question_current_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: "QuestionCurrents",
+          key: "id",
+          onUpdate: "CASCADE",
+          onDelete: "RESTRICT"
+        },
+        allowNull: false
       },
-      createdAt: {
+      user_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Users",
+          key: "id",
+          onUpdate: "CASCADE",
+          onDelete: "RESTRICT"
+        },
+        allowNull: false
+      },
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE
       }

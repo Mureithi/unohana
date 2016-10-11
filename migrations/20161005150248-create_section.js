@@ -1,7 +1,8 @@
 'use strict';
+
 module.exports = {
-  up: function(queryInterface, Sequelize) {
-    return queryInterface.createTable('Surveys', {
+  up: function (queryInterface, Sequelize) {
+    return queryInterface.createTable('Sections', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,15 +12,18 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
-      user_id: {
+      order: {
+        type: Sequelize.INTEGER
+      },
+      survey_id: {
         type: Sequelize.INTEGER,
         references: {
-          model: "Users",
+          model: "Surveys",
           key: "id",
           onUpdate: "CASCADE",
           onDelete: "RESTRICT"
         },
-          allowNull: false
+        allowNull: false
       },
       created_at: {
         allowNull: false,
@@ -31,7 +35,8 @@ module.exports = {
       }
     });
   },
-  down: function(queryInterface, Sequelize) {
-    return queryInterface.dropTable('Surveys');
+
+  down: function (queryInterface, Sequelize) {
+    return queryInterface.dropTable('Sections');
   }
 };

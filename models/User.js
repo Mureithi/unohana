@@ -32,9 +32,12 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        
+        User.belongsTo(models.UserType);
+        User.hasMany(models.QuestionData);
+        User.hasMany(models.Survey);
       }
-    }
+    },
+      underscored: true
   });
 
   return User;
