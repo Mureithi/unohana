@@ -83,5 +83,5 @@ gulp.task('watch', function() {
 });
 
 // Default Task
-gulp.task('default', ['bower', 'move_fonts','scripts','sass'
+gulp.task('default', ['bower','move_fonts','scripts','sass'
 ]);

@@ -5,7 +5,7 @@ var router = express.Router();
 
 router.get('/', function(req, res) {
   models.County.findAll().then(function(county) {
-    res.send(JSON.stringify(county));
+    res.send(county);
   });
 })
 

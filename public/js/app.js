@@ -16,7 +16,6 @@ angular.module("unohana", [
   'ui.router',
   'restangular',
   'smart-table',
-  'chart.js',
   'textAngular',
   'angularMoment',
   'ui.bootstrap',
@@ -128,6 +127,7 @@ angular.module('retsu.admin').config(function($stateProvider, $urlRouterProvider
     url: '/admin',
     views: {
       '': {
+        controller: 'adminCtrl',
         templateUrl: VIEW._modules('admin/admin.main')
       },
       'admin.header@admin':{
@@ -142,10 +142,193 @@ angular.module('retsu.admin').config(function($stateProvider, $urlRouterProvider
     url: '/dashboard',
     views: {
       '': {
-        controller: 'adminCtrl',
         templateUrl: VIEW._modules('admin/admin.dashboard')
       }
     }
+  })
+});
+
+angular.module('retsu.surveys',[]).controller('surveysCtrl', ['$scope', 'Requests',
+'$state',
+function(scope, Requests, state) {
+  scope.survey={};
+  scope.sections = [
+    {
+      description:'Section 1',
+      questions:[]
+    },
+    {
+      description:'Section 2',
+      questions:[]
+    }
+  ];
+  scope.filterOptions = ['Date', 'Tags'];
+  get();
+  get_options();
+
+  function get() {
+    var payload = {};
+    Requests.get('surveys', payload, function(data) {
+      scope.surveys = data;
+    });
+  }
+
+  function get_options(){
+    scope.options =[
+      {
+        id:1,
+        name:'Radio'
+      },
+      {
+        id:2,
+        name:'Select One'
+      },
+      {
+        id:3,
+        name:'Select Many'
+      },
+      {
+        id:4,
+        name:'Text Field'
+      },
+      {
+        id:5,
+        name:'Large Text Field'
+      },
+      {
+        id:6,
+        name:'DatePicker'
+      },
+      {
+        id:7,
+        name:'Checkbox'
+      }
+    ]
+  }
+
+  scope.add = function add() {
+    var payload = scope.survey;
+    Requests.post('surveys', payload, function(data) {
+      if(data.success){
+        state.go('admin.surveys.list')
+        get()
+      }
+    });
+  }
+  scope.edit = function edit() {
+    var payload = scope.survey;
+    Requests.put('surveys/' + payload.id, payload, function(data) {
+      if(data.success){
+        state.go('admin.surveys.list')
+      }
+    });
+  }
+
+  scope.view = function view(survey) {
+    scope.survey = survey;
+    state.go('admin.surveys.build')
+  }
+
+  scope.addQuestion = function addQuestion(section){
+    var question = {
+      description:"",
+      option_type:"",
+      options:""
+    }
+    section.questions.push(question)
+  }
+
+  scope.addSection = function addSection(sections){
+    var section = {
+      description:'Section ...',
+      questions:[]
+    }
+    sections.push(section)
+  }
+
+  scope.build = function build(){
+    var survey = scope.survey;
+    survey.sections = scope.sections;
+    state.go('admin.surveys.view')
+  }
+
+}
+])
+
+
+angular.module('retsu.surveys').directive('sTable', function() {
+  return {
+    // transclude: true,
+
+    templateUrl: VIEW._modules('surveys/surveys.table'),
+    link: function(scope, element) {
+      // Add Attributes
+
+      element.find('table').addClass(
+        'table table-bordered table-condensed')
+      element.find('input').addClass('form-control')
+    }
+  };
+});
+
+angular.module('retsu.surveys').directive('sDash', function() {
+  return {
+    // transclude: true,
+
+    templateUrl: VIEW._modules('surveys/surveys.dash'),
+    link: function(scope, element) {
+      // Add Attributes
+
+
+    }
+  };
+});
+
+
+angular.module('retsu.surveys').config(function($stateProvider, $urlRouterProvider) {
+
+  $stateProvider.state('admin.surveys', {
+    url: '/surveys',
+    views: {
+      '': {
+        controller: "surveysCtrl",
+        templateUrl: VIEW._modules('surveys/surveys.main')
+      }
+    }
+  }).
+  state('admin.surveys.dashboard', {
+    url: '/dashboard',
+    views: {
+      '': {
+        template: '<s-dash></s-dash>'
+      },
+      'surveys-total-widget@admin.surveys.dashboard': {
+        templateUrl: VIEW._modules('surveys/surveys.widget.total')
+      },
+      'surveys-actions-widget@admin.surveys.dashboard': {
+        templateUrl: VIEW._modules('surveys/surveys.widget.actions')
+      },
+    }
+  }).
+  state('admin.surveys.list', {
+    url: '/list',
+    template: '<s-table st-table="surveys"></s-table>'
+  }).
+  state('admin.surveys.add', {
+    url: '/add',
+    templateUrl: VIEW._modules('surveys/surveys.add')
+  }).
+  state('admin.surveys.build', {
+    url: '/build',
+    templateUrl: VIEW._modules('surveys/surveys.build')
+  }).
+  state('admin.surveys.view', {
+    url: '/view',
+    templateUrl: VIEW._modules('surveys/surveys.view')
+  }).
+  state('admin.surveys.start', {
+    url: '/start',
+    templateUrl: VIEW._modules('surveys/surveys.start')
   })
 });
 
@@ -394,190 +577,6 @@ angular.module('retsu.users').config(function($stateProvider, $urlRouterProvider
         templateUrl: 'app/retsu/users/users.login.tpl.html'
       }
     }
-  })
-});
-
-angular.module('retsu.surveys',[]).controller('surveysCtrl', ['$scope', 'Requests',
-'$state',
-function(scope, Requests, state) {
-  scope.survey={};
-  scope.sections = [
-    {
-      description:'Section 1',
-      questions:[]
-    },
-    {
-      description:'Section 2',
-      questions:[]
-    }
-  ];
-  scope.filterOptions = ['Date', 'Tags'];
-  get();
-  get_options();
-
-  function get() {
-    var payload = {};
-    Requests.get('surveys', payload, function(data) {
-      scope.surveys = data;
-    });
-  }
-
-  function get_options(){
-    scope.options =[
-      {
-        id:1,
-        name:'Radio'
-      },
-      {
-        id:2,
-        name:'Select One'
-      },
-      {
-        id:3,
-        name:'Select Many'
-      },
-      {
-        id:4,
-        name:'Text Field'
-      },
-      {
-        id:5,
-        name:'Large Text Field'
-      },
-      {
-        id:6,
-        name:'DatePicker'
-      },
-      {
-        id:7,
-        name:'Checkbox'
-      }
-    ]
-  }
-
-  scope.add = function add() {
-    var payload = scope.survey;
-    Requests.post('surveys', payload, function(data) {
-      if(data.success){
-        state.go('admin.surveys.list')
-        get()
-      }
-    });
-  }
-  scope.edit = function edit() {
-    var payload = scope.survey;
-    Requests.put('surveys/' + payload.id, payload, function(data) {
-      if(data.success){
-        state.go('admin.surveys.list')
-      }
-    });
-  }
-
-  scope.view = function view(survey) {
-    scope.survey = survey;
-    state.go('admin.surveys.build')
-  }
-
-  scope.addQuestion = function addQuestion(section){
-    var question = {
-      description:"",
-      option_type:"",
-      options:""
-    }
-    section.questions.push(question)
-  }
-
-  scope.addSection = function addSection(sections){
-    var section = {
-      description:'Section ...',
-      questions:[]
-    }
-    sections.push(section)
-  }
-
-  scope.build = function build(){
-    var survey = scope.survey;
-    survey.sections = scope.sections;
-    state.go('admin.surveys.view')
-  }
-
-}
-])
-
-
-angular.module('retsu.surveys').directive('sTable', function() {
-  return {
-    // transclude: true,
-
-    templateUrl: VIEW._modules('surveys/surveys.table'),
-    link: function(scope, element) {
-      // Add Attributes
-
-      element.find('table').addClass(
-        'table table-bordered table-condensed')
-      element.find('input').addClass('form-control')
-    }
-  };
-});
-
-angular.module('retsu.surveys').directive('sDash', function() {
-  return {
-    // transclude: true,
-
-    templateUrl: VIEW._modules('surveys/surveys.dash'),
-    link: function(scope, element) {
-      // Add Attributes
-
-
-    }
-  };
-});
-
-
-angular.module('retsu.surveys').config(function($stateProvider, $urlRouterProvider) {
-
-  $stateProvider.state('admin.surveys', {
-    url: '/surveys',
-    views: {
-      '': {
-        controller: "surveysCtrl",
-        templateUrl: VIEW._modules('surveys/surveys.main')
-      }
-    }
-  }).
-  state('admin.surveys.dashboard', {
-    url: '/dashboard',
-    views: {
-      '': {
-        template: '<s-dash></s-dash>'
-      },
-      'surveys-total-widget@admin.surveys.dashboard': {
-        templateUrl: VIEW._modules('surveys/surveys.widget.total')
-      },
-      'surveys-actions-widget@admin.surveys.dashboard': {
-        templateUrl: VIEW._modules('surveys/surveys.widget.actions')
-      },
-    }
-  }).
-  state('admin.surveys.list', {
-    url: '/list',
-    template: '<s-table st-table="surveys"></s-table>'
-  }).
-  state('admin.surveys.add', {
-    url: '/add',
-    templateUrl: VIEW._modules('surveys/surveys.add')
-  }).
-  state('admin.surveys.build', {
-    url: '/build',
-    templateUrl: VIEW._modules('surveys/surveys.build')
-  }).
-  state('admin.surveys.view', {
-    url: '/view',
-    templateUrl: VIEW._modules('surveys/surveys.view')
-  }).
-  state('admin.surveys.start', {
-    url: '/start',
-    templateUrl: VIEW._modules('surveys/surveys.start')
   })
 });
 

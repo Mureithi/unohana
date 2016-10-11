@@ -4,13 +4,19 @@ var router = express.Router();
 
 
 router.get('/', function(req, res) {
-  models.User.findAll().then(function(user) {
-    res.send(JSON.stringify(user));
+  models.User.findAll({
+    include: [ models.UserType ],
+    attributes: { exclude: ['password'] }
+  }).then(function(user) {
+    res.send(user);
   });
 })
 router.get('/:id', function(req, res) {
   var id = req.params.id;
-  models.User.findById(id).then(function(user) {
+  models.User.findById(id,{
+    include: [ models.UserType ],
+    attributes: { exclude: ['password'] }
+  }).then(function(user) {
     res.send(user);
   });
 })

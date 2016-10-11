@@ -1,8 +1,10 @@
 bower_components
 node_modules
 npm-debug.log
+config/config.json
 *.sqlite
 .DS_Store
 docs
 *.iml
 .idea
+

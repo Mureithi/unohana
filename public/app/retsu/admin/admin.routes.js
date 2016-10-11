@@ -4,6 +4,7 @@ angular.module('retsu.admin').config(function($stateProvider, $urlRouterProvider
     url: '/admin',
     views: {
       '': {
+        controller: 'adminCtrl',
         templateUrl: VIEW._modules('admin/admin.main')
       },
       'admin.header@admin':{
@@ -18,7 +19,6 @@ angular.module('retsu.admin').config(function($stateProvider, $urlRouterProvider
     url: '/dashboard',
     views: {
       '': {
-        controller: 'adminCtrl',
         templateUrl: VIEW._modules('admin/admin.dashboard')
       }
     }

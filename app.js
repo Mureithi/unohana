@@ -14,6 +14,11 @@ var survey = require('./controllers/survey');
 var question = require('./controllers/question');
 var county = require('./controllers/county');
 var questioncurrent = require('./controllers/questioncurrent');
+var option = require('./controllers/option');
+var section = require('./controllers/section');
+var questiondata = require('./controllers/questionData');
+var optiontype = require('./controllers/optionType');
+var usertype = require('./controllers/userType');
 var app = express();
 // view engine setup
 
@@ -48,6 +53,12 @@ app.use('/api/questions', question);
 app.use('/api/surveys', survey);
 app.use('/api/county', county);
 app.use('/api/questioncurrent', questioncurrent);
+app.use('/api/options', option);
+app.use('/api/sections', section);
+app.use('/api/questiondata', questiondata);
+app.use('/api/optiontype', optiontype);
+app.use('/api/usertype', usertype);
+
 
 
 // catch 404 and forward to error handler

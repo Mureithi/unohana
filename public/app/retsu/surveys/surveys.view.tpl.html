@@ -24,11 +24,13 @@
                     <input value="option"  type="checkbox" name="options_{{question.description}}" value="">
                   </span>
 
-                  <select ng-if="question.option_type=='Select One'" class="" name=""
-                  ng-options="option as option for option in question.options"></select>
+                  <select ng-if="question.option_type=='Select One'" class="" name="">
+                    <option ng-repeat="option in question.options" value="{{option}}">{{ option }}</option>
+                  </select>
 
-                  <select ng-if="question.option_type=='Select Many'" multiple class="" name=""
-                  ng-options="option as option for option in question.options"></select>
+                  <select ng-if="question.option_type=='Select Many'" multiple class="" name="">
+                    <option ng-repeat="option in question.options" value="{{option}}">{{ option }}</option>
+                  </select>
 
                   <input ng-if="question.option_type=='Text Field'" type="text" name="options" value="">
 
