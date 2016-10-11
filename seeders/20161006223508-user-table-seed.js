@@ -21,6 +21,24 @@ module.exports = {
       created_at: new Date(),
       updated_at: new Date()
     },
+    {
+      first_name: 'Collins',
+      last_name: 'Ojenge',
+      username: 'collinsojenge',
+      password: '123456',
+      user_type_id: 1,
+      created_at: new Date(),
+      updated_at: new Date()
+    },
+    {
+      first_name: 'Kelvin',
+      last_name: 'Mureithi',
+      username: 'kelvinmureithi',
+      password: '123456',
+      user_type_id: 1,
+      created_at: new Date(),
+      updated_at: new Date()
+    },
 
     ], {});
   },

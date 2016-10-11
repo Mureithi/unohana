@@ -27,7 +27,6 @@ angular.module("unohana", [
   'angularValidator',
   'btford.socket-io',
   'angular-loading-bar',
-  'dndLists',
   'retsu.questions',
   'retsu.users',
   'retsu.admin',
@@ -114,6 +113,254 @@ angular.module("unohana").directive('isActiveLink', ['$location', function(
  angular.module("unohana").config(function($stateProvider, $urlRouterProvider) {
    $urlRouterProvider.otherwise("/login");
  });
+
+angular.module('retsu.users',[]).controller('usersCtrl', ['$scope', 'Requests',
+  '$state',
+  function(scope, Requests, state) {
+    scope.user = {};
+
+    scope.filterOptions = ['Date', 'Tags'];
+
+    function get() {
+      var payload = {};
+      Requests.get('questions', payload, function(data) {
+        scope.questions = data.success.data;
+      });
+    }
+
+    scope.add = function add() {
+      var payload = scope.question;
+      Requests.post('questions', payload, function(data) {
+        if(data.success){
+          state.go('admin.questions.list')
+        }
+      });
+    }
+
+    scope.login = function login() {
+      var payload = scope.user;
+      Requests.post('auth', payload, function(data) {
+        if(data.success){
+          scope.user = data.user;
+          state.go('admin.questions.dashboard')
+        }
+
+      });
+    }
+
+    scope.edit = function edit() {
+      var payload = scope.question;
+      Requests.put('questions/' + payload.id, payload, function(data) {
+        scope.question = data.success.data;
+      });
+    }
+
+    scope.view = function view(question) {
+      scope.currentQuestion = question;
+      state.go('questions.view')
+    }
+  }
+])
+
+angular.module('retsu.users').config(function($stateProvider, $urlRouterProvider) {
+
+  $stateProvider.state('users', {
+    url: '/users',
+    views: {
+      '': {
+        templateUrl: 'app/questions/questions.main.tpl.html'
+      }
+    }
+
+  }).
+  state('login', {
+    url: '/login',
+    views: {
+      '': {
+        controller: 'usersCtrl',
+        templateUrl: 'app/retsu/users/users.login.tpl.html'
+      }
+    }
+  })
+});
+
+angular.module('retsu.questions',[]).controller('questionsCtrl', ['$scope', 'Requests',
+  '$state',
+  function(scope, Requests, state) {
+    scope.responses = []
+    scope.question = {};
+    scope.questions = [];
+    scope.currentQuestion = {"xwcwcwc":"cwcw"};
+
+    scope.filterOptions = ['Date', 'Tags'];
+    get();
+    get_options();
+
+    function get() {
+      var payload = {};
+      Requests.get('questions', payload, function(data) {
+        scope.questions = data;
+      });
+    }
+
+    function get_options(){
+      scope.options =[
+        {
+          id:1,
+          name:'Radio'
+        },
+        {
+          id:2,
+          name:'Select'
+        },
+        {
+          id:3,
+          name:'Text Field'
+        },
+        {
+          id:4,
+          name:'Large Text Field'
+        },
+        {
+          id:5,
+          name:'DatePicker'
+        }
+      ]
+    }
+
+    scope.add = function add() {
+      var payload = scope.question;
+      Requests.post('questions', payload, function(data) {
+        if(data.success){
+          get();
+          state.go('admin.questions.list')
+        }
+      });
+    }
+    scope.edit = function edit() {
+      var payload = scope.question;
+      Requests.put('questions/' + payload.id, payload, function(data) {
+        if(data.success){
+          state.go('admin.questions.list')
+        }
+      });
+    }
+
+    scope.view = function view(question) {
+      console.log(question)
+      scope.currentQuestion = question;
+      state.go('admin.questions.view')
+    }
+  }
+])
+
+
+angular.module('retsu.questions').directive('qTable', function() {
+  return {
+    // transclude: true,
+
+    templateUrl: VIEW._modules('questions/questions.table'),
+    link: function(scope, element) {
+      // Add Attributes
+
+      element.find('table').addClass(
+        'table table-bordered table-condensed')
+      element.find('input').addClass('form-control')
+    }
+  };
+});
+
+angular.module('retsu.questions').directive('qDash', function() {
+  return {
+    // transclude: true,
+
+    templateUrl: VIEW._modules('questions/questions.dash'),
+    link: function(scope, element) {
+      // Add Attributes
+
+
+    }
+  };
+});
+
+
+angular.module('retsu.questions').config(function($stateProvider, $urlRouterProvider) {
+
+  $stateProvider.state('admin.questions', {
+    url: '/questions',
+    views: {
+      '': {
+        controller: "questionsCtrl",
+        templateUrl: VIEW._modules('questions/questions.main')
+      }
+    }
+  }).
+  state('admin.questions.dashboard', {
+    url: '/dashboard',
+    views: {
+      '': {
+        template: '<q-dash></q-dash>'
+      },
+      'questions-total-widget@admin.questions.dashboard': {
+        templateUrl: VIEW._modules('questions/questions.widget.total')
+      },
+      'questions-responses-widget@admin.questions.dashboard': {
+        templateUrl: VIEW._modules('questions/questions.widget.responses')
+      },
+      'questions-recent-widget@admin.questions.dashboard': {
+        templateUrl: VIEW._modules('questions/questions.widget.recent')
+      },
+      'questions-actions-widget@admin.questions.dashboard': {
+        templateUrl: VIEW._modules('questions/questions.widget.actions')
+      },
+      'questions-frequency-widget@admin.questions.dashboard': {
+        templateUrl: VIEW._modules('questions/questions.graph.frequency')
+      }
+    }
+  }).
+  state('admin.questions.list', {
+    url: '/list',
+    template: '<q-table st-table="questions"></q-table>'
+  }).
+  state('admin.questions.add', {
+    url: '/add',
+    views:{
+      '':{
+        templateUrl: VIEW._modules('questions/questions.add')
+      },
+      'questions-total-widget@admin.questions.add': {
+        templateUrl: VIEW._modules('questions/questions.widget.total')
+      },
+    }
+
+  }).
+  state('admin.questions.view', {
+    url: '/view',
+    views: {
+      '': {
+        templateUrl: VIEW._modules('questions/questions.view')
+      },
+      'questions-widget-single-responses@admin.questions.view': {
+        templateUrl: VIEW._modules('questions/questions.widget.single.responses')
+      },
+      'questions-widget-single-recent@admin.questions.view': {
+        templateUrl: VIEW._modules('questions/questions.widget.single.recent')
+      },
+      'questions-graph-single-frequency@admin.questions.view': {
+        templateUrl: VIEW._modules('questions/questions.graph.single.frequency')
+      },
+      'questions-graph-single-responses@admin.questions.view': {
+        templateUrl: VIEW._modules('questions/questions.graph.single.responses')
+      },
+      'questions-graphic-distribution@admin.questions.view': {
+        templateUrl: VIEW._modules('questions/questions.graphic.distribution')
+      },
+      'questions-widget-single-actions@admin.questions.view': {
+        templateUrl: VIEW._modules('questions/questions.widget.single.actions')
+      }
+    }
+  })
+});
 
 angular.module('retsu.admin',[]).controller('adminCtrl', ['$scope', 'Requests',
   '$state',
@@ -329,254 +576,6 @@ angular.module('retsu.surveys').config(function($stateProvider, $urlRouterProvid
   state('admin.surveys.start', {
     url: '/start',
     templateUrl: VIEW._modules('surveys/surveys.start')
-  })
-});
-
-angular.module('retsu.questions',[]).controller('questionsCtrl', ['$scope', 'Requests',
-  '$state',
-  function(scope, Requests, state) {
-    scope.responses = []
-    scope.question = {};
-    scope.questions = [];
-    scope.currentQuestion = {"xwcwcwc":"cwcw"};
-
-    scope.filterOptions = ['Date', 'Tags'];
-    get();
-    get_options();
-
-    function get() {
-      var payload = {};
-      Requests.get('questions', payload, function(data) {
-        scope.questions = data;
-      });
-    }
-
-    function get_options(){
-      scope.options =[
-        {
-          id:1,
-          name:'Radio'
-        },
-        {
-          id:2,
-          name:'Select'
-        },
-        {
-          id:3,
-          name:'Text Field'
-        },
-        {
-          id:4,
-          name:'Large Text Field'
-        },
-        {
-          id:5,
-          name:'DatePicker'
-        }
-      ]
-    }
-
-    scope.add = function add() {
-      var payload = scope.question;
-      Requests.post('questions', payload, function(data) {
-        if(data.success){
-          get();
-          state.go('admin.questions.list')
-        }
-      });
-    }
-    scope.edit = function edit() {
-      var payload = scope.question;
-      Requests.put('questions/' + payload.id, payload, function(data) {
-        if(data.success){
-          state.go('admin.questions.list')
-        }
-      });
-    }
-
-    scope.view = function view(question) {
-      console.log(question)
-      scope.currentQuestion = question;
-      state.go('admin.questions.view')
-    }
-  }
-])
-
-
-angular.module('retsu.questions').directive('qTable', function() {
-  return {
-    // transclude: true,
-
-    templateUrl: VIEW._modules('questions/questions.table'),
-    link: function(scope, element) {
-      // Add Attributes
-
-      element.find('table').addClass(
-        'table table-bordered table-condensed')
-      element.find('input').addClass('form-control')
-    }
-  };
-});
-
-angular.module('retsu.questions').directive('qDash', function() {
-  return {
-    // transclude: true,
-
-    templateUrl: VIEW._modules('questions/questions.dash'),
-    link: function(scope, element) {
-      // Add Attributes
-
-
-    }
-  };
-});
-
-
-angular.module('retsu.questions').config(function($stateProvider, $urlRouterProvider) {
-
-  $stateProvider.state('admin.questions', {
-    url: '/questions',
-    views: {
-      '': {
-        controller: "questionsCtrl",
-        templateUrl: VIEW._modules('questions/questions.main')
-      }
-    }
-  }).
-  state('admin.questions.dashboard', {
-    url: '/dashboard',
-    views: {
-      '': {
-        template: '<q-dash></q-dash>'
-      },
-      'questions-total-widget@admin.questions.dashboard': {
-        templateUrl: VIEW._modules('questions/questions.widget.total')
-      },
-      'questions-responses-widget@admin.questions.dashboard': {
-        templateUrl: VIEW._modules('questions/questions.widget.responses')
-      },
-      'questions-recent-widget@admin.questions.dashboard': {
-        templateUrl: VIEW._modules('questions/questions.widget.recent')
-      },
-      'questions-actions-widget@admin.questions.dashboard': {
-        templateUrl: VIEW._modules('questions/questions.widget.actions')
-      },
-      'questions-frequency-widget@admin.questions.dashboard': {
-        templateUrl: VIEW._modules('questions/questions.graph.frequency')
-      }
-    }
-  }).
-  state('admin.questions.list', {
-    url: '/list',
-    template: '<q-table st-table="questions"></q-table>'
-  }).
-  state('admin.questions.add', {
-    url: '/add',
-    views:{
-      '':{
-        templateUrl: VIEW._modules('questions/questions.add')
-      },
-      'questions-total-widget@admin.questions.add': {
-        templateUrl: VIEW._modules('questions/questions.widget.total')
-      },
-    }
-
-  }).
-  state('admin.questions.view', {
-    url: '/view',
-    views: {
-      '': {
-        templateUrl: VIEW._modules('questions/questions.view')
-      },
-      'questions-widget-single-responses@admin.questions.view': {
-        templateUrl: VIEW._modules('questions/questions.widget.single.responses')
-      },
-      'questions-widget-single-recent@admin.questions.view': {
-        templateUrl: VIEW._modules('questions/questions.widget.single.recent')
-      },
-      'questions-graph-single-frequency@admin.questions.view': {
-        templateUrl: VIEW._modules('questions/questions.graph.single.frequency')
-      },
-      'questions-graph-single-responses@admin.questions.view': {
-        templateUrl: VIEW._modules('questions/questions.graph.single.responses')
-      },
-      'questions-graphic-distribution@admin.questions.view': {
-        templateUrl: VIEW._modules('questions/questions.graphic.distribution')
-      },
-      'questions-widget-single-actions@admin.questions.view': {
-        templateUrl: VIEW._modules('questions/questions.widget.single.actions')
-      }
-    }
-  })
-});
-
-angular.module('retsu.users',[]).controller('usersCtrl', ['$scope', 'Requests',
-  '$state',
-  function(scope, Requests, state) {
-    scope.user = {};
-
-    scope.filterOptions = ['Date', 'Tags'];
-
-    function get() {
-      var payload = {};
-      Requests.get('questions', payload, function(data) {
-        scope.questions = data.success.data;
-      });
-    }
-
-    scope.add = function add() {
-      var payload = scope.question;
-      Requests.post('questions', payload, function(data) {
-        if(data.success){
-          state.go('admin.questions.list')
-        }
-      });
-    }
-
-    scope.login = function login() {
-      var payload = scope.user;
-      Requests.post('auth', payload, function(data) {
-        if(data.success){
-          scope.user = data.user;
-          state.go('admin.questions.dashboard')
-        }
-
-      });
-    }
-
-    scope.edit = function edit() {
-      var payload = scope.question;
-      Requests.put('questions/' + payload.id, payload, function(data) {
-        scope.question = data.success.data;
-      });
-    }
-
-    scope.view = function view(question) {
-      scope.currentQuestion = question;
-      state.go('questions.view')
-    }
-  }
-])
-
-angular.module('retsu.users').config(function($stateProvider, $urlRouterProvider) {
-
-  $stateProvider.state('users', {
-    url: '/users',
-    views: {
-      '': {
-        templateUrl: 'app/questions/questions.main.tpl.html'
-      }
-    }
-
-  }).
-  state('login', {
-    url: '/login',
-    views: {
-      '': {
-        controller: 'usersCtrl',
-        templateUrl: 'app/retsu/users/users.login.tpl.html'
-      }
-    }
   })
 });
 
