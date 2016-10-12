@@ -7,12 +7,13 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         // associations can be defined here
-        Survey.belongsTo(models.User,{foreignKey: 'user_id'});
+        // Survey.belongsTo(models.User,{foreignKey: 'user_id'});
+        Survey.belongsTo(models.User);
         Survey.hasMany(models.Section);
         Survey.belongsToMany(models.County, { through: models.CountySurvey },{foreignKey: 'county_id'});
-      },
-      underscored: true
-    }
+      }
+    },
+    underscored: true
   });
   return Survey;
 };

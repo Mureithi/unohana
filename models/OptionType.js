@@ -7,9 +7,9 @@ module.exports = function(sequelize, DataTypes) {
       associate: function(models) {
         // associations can be defined here
         OptionType.hasMany(models.Option);
-      },
-      underscored: true
-    }
+      }
+    },
+    underscored: true
   });
   return OptionType;
 };

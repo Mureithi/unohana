@@ -10,11 +10,10 @@ module.exports = function(sequelize, DataTypes) {
         // associations can be defined here
         QuestionCurrent.belongsTo(models.Question);
         QuestionCurrent.belongsTo(models.Section);
-
         QuestionCurrent.hasMany(models.QuestionData);
-      },
-      underscored: true
-    }
+      }
+    },
+    underscored: true
   });
   return QuestionCurrent;
 };

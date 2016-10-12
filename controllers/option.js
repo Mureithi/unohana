@@ -4,18 +4,20 @@ var router = express.Router();
 
 
 router.get('/', function(req, res) {
-  models.Option.findAll().then(function(option) {
+  models.Option.findAll({
+    include: [ models.OptionType ],
+  }).then(function(option) {
     res.send(option);
   });
 })
-
 router.get('/:id', function(req, res) {
   var id = req.params.id;
-  models.Option.findById(id).then(function(option) {
+  models.Option.findById(id,{
+    include: [ models.OptionType ]
+  }).then(function(option) {
     res.send(option);
   });
 })
-
 router.post('/', function(req, res) {
   models.Option.create(req.body).then(function(option) {
     res.send(
@@ -27,7 +29,6 @@ router.post('/', function(req, res) {
     );
   });
 })
-
 router.put('/:id', function(req, res) {
   var id = req.params.id;
   var option = req.body;
@@ -35,7 +36,11 @@ router.put('/:id', function(req, res) {
   models.Option.findById(id).then(function(option) {
     if (option) {
       option.update({
-        "description": option.description
+        "description": option.description,
+
+        "values": option.values,
+
+        "tags": option.tags
       }).then(function() {
         res.send(JSON.stringify(option.id + ' Updated'));
       })

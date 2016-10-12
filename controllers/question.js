@@ -5,11 +5,9 @@ var router = express.Router();
 
 router.get('/', function(req, res) {
   models.Question.findAll().then(function(question) {
-    question = question.map(transform_question)
-    res.send(JSON.stringify(question));
+  res.send(question);
   });
 })
-
 router.get('/:id', function(req, res) {
   var id = req.params.id;
   models.Question.findById(id).then(function(question) {
