@@ -10,9 +10,9 @@ module.exports = function(sequelize, DataTypes) {
         QuestionData.belongsTo(models.QuestionCurrent);
         QuestionData.belongsTo(models.User);
         QuestionData.belongsTo(models.CountySurvey);
-      },
-      underscored: true
-    }
+      }
+    },
+    underscored: true
   });
   return QuestionData;
 };

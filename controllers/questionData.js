@@ -4,14 +4,38 @@ var router = express.Router();
 
 
 router.get('/', function(req, res) {
-  models.QuestionData.findAll().then(function(questionData) {
+  models.QuestionData.findAll({
+    include: [
+      {
+        model: models.QuestionCurrent,
+          include:[
+              {model: models.Question},
+              {model:models.Section}
+            ]
+      },
+      {model: models.User, include:[{model: models.UserType}]},
+    ],
+
+  }).then(function(questionData) {
     res.send(questionData);
   });
 })
 
+
 router.get('/:id', function(req, res) {
   var id = req.params.id;
-  models.QuestionData.findById(id).then(function(questionData) {
+  models.QuestionData.findById(id,{
+    include: [
+      {
+        model: models.QuestionCurrent,
+          include:[
+              {model: models.Question},
+              {model:models.Section}
+            ]
+      },
+      {model: models.User, include:[{model: models.UserType}]},
+    ],
+  }).then(function(questionData) {
     res.send(questionData);
   });
 })

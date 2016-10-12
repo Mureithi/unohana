@@ -2,23 +2,27 @@ var models = require('../models');
 var express = require('express');
 var router = express.Router();
 
-
+//it is a bit dirty the password is accessible for now
+//still working on a solution to this
 router.get('/', function(req, res) {
   models.Survey.findAll({
-    include: [models.User,models.County]
+    include: [{model: models.User,attributes: { exclude: ['password'] },include:[{model: models.UserType}]}],
   }).then(function(survey) {
-    res.send(JSON.stringify(survey));
+    res.send(survey);
   });
 })
+
+
 router.get('/:id', function(req, res) {
   var id = req.params.id;
-  models.Survey.findById(id).then(function(survey) {
+  models.Survey.findById(id,{
+    include: [{model: models.User,attributes: { exclude: ['password'] },include:[{model: models.UserType}]}],
+  }).then(function(survey) {
     res.send(survey);
   });
 })
 
 router.post('/', function(req, res) {
-  console.log(req.body);
   models.Survey.create(req.body).then(function(survey) {
     res.send(
       {
@@ -29,6 +33,7 @@ router.post('/', function(req, res) {
     );
   });
 })
+
 router.put('/:id', function(req, res) {
   var id = req.params.id;
   var new_survey = req.body;
@@ -44,8 +49,6 @@ router.put('/:id', function(req, res) {
 
   });
 })
-
-
 
 
 module.exports = router;

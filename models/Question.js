@@ -9,9 +9,9 @@ module.exports = function(sequelize, DataTypes) {
       associate: function(models) {
         // associations can be defined here
         Question.hasMany(models.QuestionCurrent);
-      },
-      underscored: true
-    }
+      }
+    },
+    underscored: true
   });
   return Question;
 };

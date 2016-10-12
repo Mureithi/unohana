@@ -12,9 +12,9 @@ module.exports = function(sequelize, DataTypes) {
         // associations can be defined here
         Option.belongsTo(models.OptionType);
         Option.hasMany(models.Question);
-      },
-      underscored: true
-    }
+      }
+    },
+    underscored: true
   });
   return Option;
 };

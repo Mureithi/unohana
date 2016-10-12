@@ -4,14 +4,25 @@ var router = express.Router();
 
 
 router.get('/', function(req, res) {
-  models.QuestionCurrent.findAll().then(function(questioncurrent) {
-    res.send(JSON.stringify(questioncurrent));
+  models.QuestionCurrent.findAll({
+    include: [
+      {model: models.Question},
+      {model: models.Section},
+    ],
+
+  }).then(function(questioncurrent) {
+    res.send(questioncurrent);
   });
 })
 
 router.get('/:id', function(req, res) {
   var id = req.params.id;
-  models.QuestionCurrent.findById(id).then(function(questioncurrent) {
+  models.QuestionCurrent.findById(id,{
+    include: [
+      {model: models.Question},
+      {model: models.Section}
+    ]
+  }).then(function(questioncurrent) {
     res.send(questioncurrent);
   });
 })

@@ -1,6 +1,7 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   var CountySurvey = sequelize.define('CountySurvey', {
+    
 
   }, {
     classMethods: {
@@ -8,7 +9,8 @@ module.exports = function(sequelize, DataTypes) {
         // associations can be defined here
         CountySurvey.hasMany(models.QuestionData);
       }
-    }
+    },
+    underscored: true
   });
   return CountySurvey;
 };
